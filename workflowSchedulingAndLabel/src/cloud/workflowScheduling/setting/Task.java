@@ -15,7 +15,7 @@ public class Task implements Serializable{
 	public double averageET;
 
 	//adjacent list to store workflow graph
-	//ÓÉÓÚ×Ó±ßµÄÖÕ¶ËÖ®¼ä¿ÉÄÜÒ²´æÔÚ¸¸×Ó¹ØÏµ£¬ËùÒÔÕâĞ©edge¶¼ÊÇ°´ÕÕÆäÖÕ¶Ë¶ÔÓ¦µÄÍØÆËË³Ğò½øĞĞÅÅĞòµÄ;  Í¨¹ıworkflowÖĞµÄrefineº¯ÊıÊµÏÖ
+	//ç”±äºå­è¾¹çš„ç»ˆç«¯ä¹‹é—´å¯èƒ½ä¹Ÿå­˜åœ¨çˆ¶å­å…³ç³»ï¼Œæ‰€ä»¥è¿™äº›edgeéƒ½æ˜¯æŒ‰ç…§å…¶ç»ˆç«¯å¯¹åº”çš„æ‹“æ‰‘é¡ºåºè¿›è¡Œæ’åºçš„;  é€šè¿‡workflowä¸­çš„refineå‡½æ•°å®ç°
 	private List<Edge> outEdges = new ArrayList<Edge>();	
 	private List<Edge> inEdges = new ArrayList<Edge>();
 	private int topoCount = 0;			//used for topological sort
@@ -28,7 +28,7 @@ public class Task implements Serializable{
 	
 	private double subD = 0;
 	private double dRank = 0;
-	private double fastET = 0; //×î¿ìÖ´ĞĞÊ±¼ä
+	private double fastET = 0; //æœ€å¿«æ‰§è¡Œæ—¶é—´
 	private int depth =0;
 	private double inData = 0;
 
@@ -114,7 +114,7 @@ public class Task implements Serializable{
 	}
 	public void calDRank(Solution s) {
 		HashMap<Task, Allocation> remap = s.getRevMapping();
-		double tt = 0; //´«ÊäÊ±¼ä
+		double tt = 0; //ä¼ è¾“æ—¶é—´
 		Allocation cAlloc = remap.get(this);
 		double arrivalTime = 0;
 		for(Edge inEdge : this.getInEdges()){
@@ -141,7 +141,7 @@ public class Task implements Serializable{
 			return;
 		
 		HashMap<Task, Allocation> remap = s.getRevMapping();
-		double tt = 0; //´«ÊäÊ±¼ä
+		double tt = 0; //ä¼ è¾“æ—¶é—´
 		
 		for(Edge inEdge : this.getInEdges()){
 			Task parent = inEdge.getSource();	
@@ -209,7 +209,7 @@ public class Task implements Serializable{
 		this.inData = inD;
 	}
 	public void calIndata() {
-		double tt = 0; //´«ÊäÊ±¼ä
+		double tt = 0; //ä¼ è¾“æ—¶é—´
 		double maxTT = 0;
 		for(Edge inEdge : this.getInEdges()){
 			Task parent = inEdge.getSource();
@@ -293,7 +293,7 @@ public class Task implements Serializable{
 	//---------------------task properties used in ICPCP algorithm---------------------------
 	private double EST = -1, EFT = -1, LFT = -1, AST = -1, AFT = -1;  //'-1' means the value has not been set
 	private Task criticalParent;
-	private boolean isAssigned = false;		//assignedÒÔºóEST¾Í±íÊ¾Êµ¼ÊµÄ¿ªÊ¼Ê±¼äÁË£»EFTºÍLFT¶¼ÉèÎª   finish time£¬ÓëÂÛÎÄ²»Í¬
+	private boolean isAssigned = false;		//assignedä»¥åESTå°±è¡¨ç¤ºå®é™…çš„å¼€å§‹æ—¶é—´äº†ï¼›EFTå’ŒLFTéƒ½è®¾ä¸º   finish timeï¼Œä¸è®ºæ–‡ä¸åŒ
 
 	public double getEST() {		return EST;	}
 	public void setEST(double eST) {		EST = eST;	}

@@ -16,7 +16,7 @@ public class Workflow extends ArrayList<Task>{
 	private int maxParallel;
 	
 	//only used in reading DAX
-	private HashMap<String, TransferData> transferData = new HashMap<String, TransferData>(); //Ç°Ìá£º fileName±ØĞë¿É×÷Îª±êÊ¾
+	private HashMap<String, TransferData> transferData = new HashMap<String, TransferData>(); //å‰æï¼š fileNameå¿…é¡»å¯ä½œä¸ºæ ‡ç¤º
 	private HashMap<String, Task> nameTaskMapping = new HashMap<String, Task>();
 	public HashMap<Integer, Task> idTaskMapping = new HashMap<Integer, Task>();
 	
@@ -26,13 +26,13 @@ public class Workflow extends ArrayList<Task>{
 		try {		//readDAX
 			SAXParser sp = SAXParserFactory.newInstance().newSAXParser();
 			sp.parse(new InputSource(file), new MyDAXReader());
-			System.out.println("¹¤×÷Á÷succeed to read DAX data from " + file);
+			System.out.println("å·¥ä½œæµsucceed to read DAX data from " + file);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		//-----------add tasks to this workflow: start----------------------
-		//Ã¿¸öÈÎÎñ£¬ÒÔ¼°ÈÎÎñÖ®¼äµÄÒÀÀµ(¿ØÖÆÁ÷)¶¼½¨Á¢Íê±Ï£¬µ«ÊÇÈÎÎñ¼äÒÀÀµµÄÊı¾İsize»¹Ã»ÓĞÉèÖÃ£¬¼´Êı¾İÁ÷»¹Ã»ÓĞ
+		//æ¯ä¸ªä»»åŠ¡ï¼Œä»¥åŠä»»åŠ¡ä¹‹é—´çš„ä¾èµ–(æ§åˆ¶æµ)éƒ½å»ºç«‹å®Œæ¯•ï¼Œä½†æ˜¯ä»»åŠ¡é—´ä¾èµ–çš„æ•°æ®sizeè¿˜æ²¡æœ‰è®¾ç½®ï¼Œå³æ•°æ®æµè¿˜æ²¡æœ‰
 		for(Task t: nameTaskMapping.values())
 			this.add(t);
 		Task tentry = new Task(("entry"), 0);	
@@ -40,13 +40,13 @@ public class Workflow extends ArrayList<Task>{
 		for(Task t: this){						//add edges to entry and exit
 			if(t.getInEdges().size()==0){
 				Edge e = new Edge(tentry, t);
-				e.setDataSize(0); //ÉèÖÃentryºÍdummyÖ®¼äµÄ´«ÊäÊı¾İÎª0
+				e.setDataSize(0); //è®¾ç½®entryå’Œdummyä¹‹é—´çš„ä¼ è¾“æ•°æ®ä¸º0
 				t.getInEdges().add(e);
 				tentry.getOutEdges().add(e);
 			}
 			if(t.getOutEdges().size()==0){
 				Edge e = new Edge(t, texit);
-				e.setDataSize(0); //ÉèÖÃexitºÍdummyÖ®¼äµÄ´«ÊäÊı¾İÎª0
+				e.setDataSize(0); //è®¾ç½®exitå’Œdummyä¹‹é—´çš„ä¼ è¾“æ•°æ®ä¸º0
 				t.getOutEdges().add(e);
 				texit.getInEdges().add(e);
 			}
@@ -59,11 +59,11 @@ public class Workflow extends ArrayList<Task>{
 		topoSort();		// turn to a topological sort
 		calcTaskLevels();
 		
-		//½¨Á¢workflowÖĞtaskºÍidµÄ¶ÔÓ¦¹ØÏµ
+		//å»ºç«‹workflowä¸­taskå’Œidçš„å¯¹åº”å…³ç³»
 		for(Task task : this)
 			idTaskMapping.put(task.getId(), task);
 		
-//		System.out.println("£¡£¡£¡£¡£¡£¡£¡£¡£¡dummy´«ÊäÁ÷£¡£¡£¡£¡£¡£¡£¡£¡£¡£¡£¡£¡£¡");
+//		System.out.println("ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼dummyä¼ è¾“æµï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼ï¼");
 //		Task en = this.get(0);
 //		for(Edge e: en.getOutEdges()){
 //			Task child = e.getDestination();
@@ -82,16 +82,16 @@ public class Workflow extends ArrayList<Task>{
 		Task tentry = this.get(0);
 		Task texit = this.get(this.size() - 1);
 
-		for(TransferData td : transferData.values()){	//Bind data flow to control flow //transferDataÖĞ´æµÄÊÇxmlÎÄ¼şÖĞµÄÎÄ¼ş
+		for(TransferData td : transferData.values()){	//Bind data flow to control flow //transferDataä¸­å­˜çš„æ˜¯xmlæ–‡ä»¶ä¸­çš„æ–‡ä»¶
 			Task source = td.getSource();
 			List<Task> destinations = td.getDestinations();
-			if(source == null){ //taskµÄÊäÈëÎÄ¼şÖĞÓĞ±¾µØÎÄ¼ş£¬ÕæÕıµÄÈë¿Ú¿ÉÄÜ²»ÔÚÀïÃæ
-				source = tentry; //ÕâĞ©taskÏÂÃæ½¨Á¢ÁËºÍdummy entryµÄÁ´½Ó£¬´«ÊäÊı¾İÃ»ÓĞÉèÖÃÎª0
+			if(source == null){ //taskçš„è¾“å…¥æ–‡ä»¶ä¸­æœ‰æœ¬åœ°æ–‡ä»¶ï¼ŒçœŸæ­£çš„å…¥å£å¯èƒ½ä¸åœ¨é‡Œé¢
+				source = tentry; //è¿™äº›taskä¸‹é¢å»ºç«‹äº†å’Œdummy entryçš„é“¾æ¥ï¼Œä¼ è¾“æ•°æ®æ²¡æœ‰è®¾ç½®ä¸º0
 				td.setSize(0);		//a setting: transfer time of input data is omitted --- setting to 0
 			}
-			if(destinations == null || destinations.size()==0) {	//taskµÄÊä³öÎÄ¼şÎ´±»ÆäËûÈÎÎñÊ¹ÓÃ£¨±¾µØÎÄ¼ş£©£¬ÕæÕıµÄ³ö¿Ú¿ÉÄÜ²»ÔÚÀïÃæ
-				destinations.add(texit); //ÕâĞ©taskÏÂÃæ½¨Á¢ÁËºÍdummy exitµÄÁ´½Ó£¬´«ÊäÊı¾İÃ»ÓĞÉèÖÃÎª0
-				td.setSize(0); 			//´«ÊäÊı¾İĞŞ¸ÄÎª0 190905ylw
+			if(destinations == null || destinations.size()==0) {	//taskçš„è¾“å‡ºæ–‡ä»¶æœªè¢«å…¶ä»–ä»»åŠ¡ä½¿ç”¨ï¼ˆæœ¬åœ°æ–‡ä»¶ï¼‰ï¼ŒçœŸæ­£çš„å‡ºå£å¯èƒ½ä¸åœ¨é‡Œé¢
+				destinations.add(texit); //è¿™äº›taskä¸‹é¢å»ºç«‹äº†å’Œdummy exitçš„é“¾æ¥ï¼Œä¼ è¾“æ•°æ®æ²¡æœ‰è®¾ç½®ä¸º0
+				td.setSize(0); 			//ä¼ è¾“æ•°æ®ä¿®æ”¹ä¸º0 190905ylw
 			}
 			for(Task destination : destinations){
 				boolean flag = true;
@@ -103,8 +103,8 @@ public class Workflow extends ArrayList<Task>{
 				}
 				//an annoying problem in some DAX files: a data flow cannot be bound to existing control flows 
 				//flag to indicate whether this problem exists
-				//ÒòÎª±¾µØÎÄ¼şµÄ´æÔÚÔì³ÉÁËÕâÖÖproblem, ÏÂÃæÆäÊµÌí¼ÓÁË±¾µØÎÄ¼şµÄ¿ØÖÆÁ÷£¬Ô´ÊÇĞéÄâÈë¿Ú£¬Ä¿µÄµØÊÇ±¾µØÎÄ¼şµÄÄ¿µÄtask;
-				//																»òÕßÔ´ÊÇ±¾µØÎÄ¼ş²úÉúµÄtask, Ä¿µÄµØÊÇĞéÄâ³ö¿Ú
+				//å› ä¸ºæœ¬åœ°æ–‡ä»¶çš„å­˜åœ¨é€ æˆäº†è¿™ç§problem, ä¸‹é¢å…¶å®æ·»åŠ äº†æœ¬åœ°æ–‡ä»¶çš„æ§åˆ¶æµï¼Œæºæ˜¯è™šæ‹Ÿå…¥å£ï¼Œç›®çš„åœ°æ˜¯æœ¬åœ°æ–‡ä»¶çš„ç›®çš„task;
+				//																æˆ–è€…æºæ˜¯æœ¬åœ°æ–‡ä»¶äº§ç”Ÿçš„task, ç›®çš„åœ°æ˜¯è™šæ‹Ÿå‡ºå£
 				if(flag == true){
 					Edge e = new Edge(source, destination);
 					e.setDataSize(td.getSize());
@@ -122,7 +122,7 @@ public class Workflow extends ArrayList<Task>{
 	private void topoSort(){
 		// Empty list that will contain the sorted elements
 		List<Task> topoList = new ArrayList<Task>();	
-		//S¡ûSet of all nodes with no incoming edges
+		//Sâ†Set of all nodes with no incoming edges
 		PriorityQueue<Task> S = new PriorityQueue<Task>(10, new Task.ParallelComparator());		
 		S.add(this.get(0));		
 
@@ -130,7 +130,7 @@ public class Workflow extends ArrayList<Task>{
 			task.setTopoCount(0);
 		
 		this.maxParallel = -1;
-		while(S.size()>0){ //Ñ¡Ôñ¿ÉÒÔµ÷¶ÈµÄ£¨¸¸´ú¶¼µ÷¶ÈÍêµÄ£©£¬È»ºó¶Ô¿ÉÒÔµ÷¶ÈµÄtask¸ù¾İ³ö¶È-Èë¶ÈµÄ²î×öÁËÅÅĞò£¬ÏÈµ÷¶È²î´óµÄ
+		while(S.size()>0){ //é€‰æ‹©å¯ä»¥è°ƒåº¦çš„ï¼ˆçˆ¶ä»£éƒ½è°ƒåº¦å®Œçš„ï¼‰ï¼Œç„¶åå¯¹å¯ä»¥è°ƒåº¦çš„taskæ ¹æ®å‡ºåº¦-å…¥åº¦çš„å·®åšäº†æ’åºï¼Œå…ˆè°ƒåº¦å·®å¤§çš„
 			maxParallel = Math.max(maxParallel, S.size());
 			Task task = S.poll();				// remove a node n from S
 			topoList.add(task);			// add n to tail of L
@@ -148,18 +148,18 @@ public class Workflow extends ArrayList<Task>{
 		Edge.EComparator ecForDestination = new Edge.EComparator(true, topoList);
 		Edge.EComparator ecForSource = new Edge.EComparator(false, topoList);
 		for(Task t : this){
-			Collections.sort(t.getInEdges(), ecForSource); //tµÄÊäÈë±ß°´ÕÕ±ßµÄÔ´ÈÎÎñÔÚtopoListÖĞµÄÎ»ÖÃ´ÓĞ¡µ½´óÅÅÁĞ
-			Collections.sort(t.getOutEdges(), ecForDestination); //tµÄÊä³ö±ß°´ÕÕ±ßµÄÄ¿µÄµØÈÎÎñÔÚtopoListÖĞµÄÎ»ÖÃ´ÓĞ¡µ½´óÅÅÁĞ
+			Collections.sort(t.getInEdges(), ecForSource); //tçš„è¾“å…¥è¾¹æŒ‰ç…§è¾¹çš„æºä»»åŠ¡åœ¨topoListä¸­çš„ä½ç½®ä»å°åˆ°å¤§æ’åˆ—
+			Collections.sort(t.getOutEdges(), ecForDestination); //tçš„è¾“å‡ºè¾¹æŒ‰ç…§è¾¹çš„ç›®çš„åœ°ä»»åŠ¡åœ¨topoListä¸­çš„ä½ç½®ä»å°åˆ°å¤§æ’åˆ—
 		}
 		
 		Collections.copy(this, topoList);
 	}
 	
 	//calculate heuristic information of tasks, e.g., bLvel(upward rank), tLevel(downward rank) 
-	public void calcTaskLevels(){ //L-ACOÎÄÕÂÖĞµÄbLvel¼ÆËãÒÔ¼°staticLevel(Ã»ÓĞ¿¼ÂÇÈÎÎñ¼äµÄ´«ÊäÊ±¼ä)¼ÆËã
+	public void calcTaskLevels(){ //L-ACOæ–‡ç« ä¸­çš„bLvelè®¡ç®—ä»¥åŠstaticLevel(æ²¡æœ‰è€ƒè™‘ä»»åŠ¡é—´çš„ä¼ è¾“æ—¶é—´)è®¡ç®—
 		double speed = VM.SPEEDS[VM.FASTEST];
 		
-		for(int j= this.size()-1; j>=0; j--){ //´Ó³ö¿ÚÈÎÎñ¿ªÊ¼¼ÆËãupward rank
+		for(int j= this.size()-1; j>=0; j--){ //ä»å‡ºå£ä»»åŠ¡å¼€å§‹è®¡ç®—upward rank
 			double bLevel = 0;	
 			double sLevel = 0;
 			Task task = this.get(j);
@@ -174,7 +174,7 @@ public class Workflow extends ArrayList<Task>{
 		
 		for(int j= this.size()-1; j>=0; j--){
 			Task task = this.get(j);
-			double ALAP = this.get(0).getbLevel();		//CPLength Èë¿ÚÈÎÎñµÄblevel¾ÍÊÇ¹Ø¼üÂ·¾¶µÄ³¤¶È
+			double ALAP = this.get(0).getbLevel();		//CPLength å…¥å£ä»»åŠ¡çš„blevelå°±æ˜¯å…³é”®è·¯å¾„çš„é•¿åº¦
 			for(Edge outEdge : task.getOutEdges()){
 				Task child = outEdge.getDestination();
 				ALAP = Math.min(ALAP, child.getALAP()-outEdge.getDataSize() / VM.NETWORK_SPEED);
@@ -182,7 +182,7 @@ public class Workflow extends ArrayList<Task>{
 			task.setALAP(ALAP - task.getTaskSize() / speed);
 		}
 		
-		for(Task task : this){ //¼ÆËãTLevel
+		for(Task task : this){ //è®¡ç®—TLevel
 			double arrivalTime = 0;
 			for(Edge inEdge : task.getInEdges()){
 				Task parent = inEdge.getSource();
@@ -193,21 +193,21 @@ public class Workflow extends ArrayList<Task>{
 		}
 		
 //		Collections.sort(topoList, new Task.TLevelComparator());
-//		System.out.println("topological sort and tlevel£º");
+//		System.out.println("topological sort and tlevelï¼š");
 //		for(Task t : topoList)
 //			System.out.println(t.getName() +"\t"+t.gettLevel());
 		
 //		Collections.sort(this, new Task.BLevelComparator());
 //		Collections.reverse(this);
 		
-//		System.out.println("topological sort and blevel£º");
+//		System.out.println("topological sort and blevelï¼š");
 //		for(Task t : this)
 //			System.out.println(t.getName() +"\t"+t.getbLevel());
 	}
-	public void calcTaskLevelsAverage(){ //L-ACOÎÄÕÂÖĞµÄbLvel¼ÆËãÒÔ¼°staticLevel(Ã»ÓĞ¿¼ÂÇÈÎÎñ¼äµÄ´«ÊäÊ±¼ä)¼ÆËã
+	public void calcTaskLevelsAverage(){ //L-ACOæ–‡ç« ä¸­çš„bLvelè®¡ç®—ä»¥åŠstaticLevel(æ²¡æœ‰è€ƒè™‘ä»»åŠ¡é—´çš„ä¼ è¾“æ—¶é—´)è®¡ç®—
 		double speed = VM.SPEEDS[VM.FASTEST];
 		
-		for(int j= this.size()-1; j>=0; j--){ //´Ó³ö¿ÚÈÎÎñ¿ªÊ¼¼ÆËãupward rank
+		for(int j= this.size()-1; j>=0; j--){ //ä»å‡ºå£ä»»åŠ¡å¼€å§‹è®¡ç®—upward rank
 			double bLevel = 0;	
 			double sLevel = 0;
 			Task task = this.get(j);
@@ -216,14 +216,14 @@ public class Workflow extends ArrayList<Task>{
 				bLevel = Math.max(bLevel, child.getbLevel() + outEdge.getDataSize() / VM.NETWORK_SPEED);
 				sLevel = Math.max(sLevel, child.getsLevel());
 			}
-			task.setbLevel(bLevel + task.averageET); //ÓÃÆ½¾ùÖ´ĞĞÊ±¼ä¼ÆËã
-//			task.setbLevel(bLevel + task.getTaskSize() / speed); //ÓÃ×î¿ìÖ´ĞĞÊ±¼ä¼ÆËã
+			task.setbLevel(bLevel + task.averageET); //ç”¨å¹³å‡æ‰§è¡Œæ—¶é—´è®¡ç®—
+//			task.setbLevel(bLevel + task.getTaskSize() / speed); //ç”¨æœ€å¿«æ‰§è¡Œæ—¶é—´è®¡ç®—
 			task.setsLevel(sLevel + task.getTaskSize() / speed);
 		}
 		
 		for(int j= this.size()-1; j>=0; j--){
 			Task task = this.get(j);
-			double ALAP = this.get(0).getbLevel();		//CPLength Èë¿ÚÈÎÎñµÄblevel¾ÍÊÇ¹Ø¼üÂ·¾¶µÄ³¤¶È
+			double ALAP = this.get(0).getbLevel();		//CPLength å…¥å£ä»»åŠ¡çš„blevelå°±æ˜¯å…³é”®è·¯å¾„çš„é•¿åº¦
 			for(Edge outEdge : task.getOutEdges()){
 				Task child = outEdge.getDestination();
 				ALAP = Math.min(ALAP, child.getALAP()-outEdge.getDataSize() / VM.NETWORK_SPEED);
@@ -231,7 +231,7 @@ public class Workflow extends ArrayList<Task>{
 			task.setALAP(ALAP - task.getTaskSize() / speed);
 		}
 		
-		for(Task task : this){ //¼ÆËãTLevel
+		for(Task task : this){ //è®¡ç®—TLevel
 			double arrivalTime = 0;
 			for(Edge inEdge : task.getInEdges()){
 				Task parent = inEdge.getSource();
@@ -242,20 +242,20 @@ public class Workflow extends ArrayList<Task>{
 		}
 		
 //		Collections.sort(topoList, new Task.TLevelComparator());
-//		System.out.println("topological sort and tlevel£º");
+//		System.out.println("topological sort and tlevelï¼š");
 //		for(Task t : topoList)
 //			System.out.println(t.getName() +"\t"+t.gettLevel());
 		
 //		Collections.sort(this, new Task.BLevelComparator());
 //		Collections.reverse(this);
 		
-//		System.out.println("topological sort and blevel£º");
+//		System.out.println("topological sort and blevelï¼š");
 //		for(Task t : this)
 //			System.out.println(t.getName() +"\t"+t.getbLevel());
 	}
 	
 	/**
-	 * ¸ù¾İupward rankºÍlevelÉÏÏÂÊ±¼ä±ÈÀı*ÈÎÎñÊ±¼ä¼ÆËãrank 2.1
+	 * æ ¹æ®upward rankå’Œlevelä¸Šä¸‹æ—¶é—´æ¯”ä¾‹*ä»»åŠ¡æ—¶é—´è®¡ç®—rank 2.1
 	 * @param taskLevelSet
 	 * @param ETSubDlevel
 	 */
@@ -263,19 +263,19 @@ public class Workflow extends ArrayList<Task>{
 		double speed = VM.SPEEDS[VM.FASTEST];
 		
 		ListIterator<Map.Entry<Integer, List<Task>>> tls= new ArrayList<Map.Entry<Integer, List<Task>>>(taskLevelSet.entrySet()).listIterator(taskLevelSet.size());
-	    while(tls.hasPrevious()) {  //ÄæĞò±éÀú	//´Ó³ö¿ÚÈÎÎñ¿ªÊ¼¼ÆËã
+	    while(tls.hasPrevious()) {  //é€†åºéå†	//ä»å‡ºå£ä»»åŠ¡å¼€å§‹è®¡ç®—
 	        Map.Entry<Integer, List<Task>> entry = tls.previous();  
 	        int depth = entry.getKey().intValue();
 	        List<Task> tasks = entry.getValue();
 	        for(Task task : tasks) {
-	        	//¼ÆËãÈÎÎñµÄupward rank
+	        	//è®¡ç®—ä»»åŠ¡çš„upward rank
 	        	double bLevel = 0;	
 				for(Edge outEdge : task.getOutEdges()){
 					Task child = outEdge.getDestination();
 					bLevel = Math.max(bLevel, child.getbLevel() + outEdge.getDataSize() / VM.NETWORK_SPEED);
 				}
 				
-				//¼ÆËãÈÎÎñµÄlevel±ÈÀı
+				//è®¡ç®—ä»»åŠ¡çš„levelæ¯”ä¾‹
 				double lLevel = 0;
 				if(depth == 1)
 //				if(depth == 1 || depth == taskLevelSet.size())
@@ -293,28 +293,28 @@ public class Workflow extends ArrayList<Task>{
 	
 	
 	/**
-	 * ¸ù¾İupward rankºÍlevelÉÏÏÂ¸öÊı±ÈÀı¼ÆËãrank 2.0
+	 * æ ¹æ®upward rankå’Œlevelä¸Šä¸‹ä¸ªæ•°æ¯”ä¾‹è®¡ç®—rank 2.0
 	 * @param taskLevelSet
 	 */
 	public void calcTaskBLLevels20(Map<Integer, List<Task>> taskLevelSet) { 
 		double speed = VM.SPEEDS[VM.FASTEST];
 		
 		ListIterator<Map.Entry<Integer, List<Task>>> tls= new ArrayList<Map.Entry<Integer, List<Task>>>(taskLevelSet.entrySet()).listIterator(taskLevelSet.size());
-	    while(tls.hasPrevious()) {  //ÄæĞò±éÀú	//´Ó³ö¿ÚÈÎÎñ¿ªÊ¼¼ÆËã
+	    while(tls.hasPrevious()) {  //é€†åºéå†	//ä»å‡ºå£ä»»åŠ¡å¼€å§‹è®¡ç®—
 	        Map.Entry<Integer, List<Task>> entry = tls.previous();  
 	        int depth = entry.getKey().intValue();
 	        List<Task> tasks = entry.getValue();
 	        for(Task task : tasks) {
-	        	//¼ÆËãÈÎÎñµÄupward rank
+	        	//è®¡ç®—ä»»åŠ¡çš„upward rank
 	        	double bLevel = 0;	
 				for(Edge outEdge : task.getOutEdges()){
 					Task child = outEdge.getDestination();
 					bLevel = Math.max(bLevel, child.getbLevel() + outEdge.getDataSize() / VM.NETWORK_SPEED);
 				}
 				
-				//¼ÆËãÈÎÎñµÄlevel±ÈÀı
+				//è®¡ç®—ä»»åŠ¡çš„levelæ¯”ä¾‹
 				double lLevel = 0;
-//				if(depth == 1 || depth == taskLevelSet.size()) //2.0.1¸ÃĞ§¹û²»ÈçÖ»ÓĞÒ»¸öÌõ¼ş
+//				if(depth == 1 || depth == taskLevelSet.size()) //2.0.1è¯¥æ•ˆæœä¸å¦‚åªæœ‰ä¸€ä¸ªæ¡ä»¶
 				if(depth == 1) //2.0.0
 					lLevel = 0;
 				else
@@ -327,28 +327,28 @@ public class Workflow extends ArrayList<Task>{
 	}
 	
 	/**
-	 * ¸ù¾İupward rankºÍlevelÉÏÏÂ¸öÊı²î ±ÈÀı¼ÆËãrank 2.0.2
+	 * æ ¹æ®upward rankå’Œlevelä¸Šä¸‹ä¸ªæ•°å·® æ¯”ä¾‹è®¡ç®—rank 2.0.2
 	 * @param taskLevelSet
 	 */
 	public void calcTaskBLLevels20(Map<Integer, List<Task>> taskLevelSet, List<Double> ETSubDlevel, double total) {
 		double speed = VM.SPEEDS[VM.FASTEST];
 		
 		ListIterator<Map.Entry<Integer, List<Task>>> tls= new ArrayList<Map.Entry<Integer, List<Task>>>(taskLevelSet.entrySet()).listIterator(taskLevelSet.size());
-	    while(tls.hasPrevious()) {  //ÄæĞò±éÀú	//´Ó³ö¿ÚÈÎÎñ¿ªÊ¼¼ÆËã
+	    while(tls.hasPrevious()) {  //é€†åºéå†	//ä»å‡ºå£ä»»åŠ¡å¼€å§‹è®¡ç®—
 	        Map.Entry<Integer, List<Task>> entry = tls.previous();  
 	        int depth = entry.getKey().intValue();
 	        List<Task> tasks = entry.getValue();
 	        for(Task task : tasks) {
-	        	//¼ÆËãÈÎÎñµÄupward rank
+	        	//è®¡ç®—ä»»åŠ¡çš„upward rank
 	        	double bLevel = 0;	
 				for(Edge outEdge : task.getOutEdges()){
 					Task child = outEdge.getDestination();
 					bLevel = Math.max(bLevel, child.getbLevel() + outEdge.getDataSize() / VM.NETWORK_SPEED);
 				}
 				
-				//¼ÆËãÈÎÎñµÄlevel±ÈÀı
+				//è®¡ç®—ä»»åŠ¡çš„levelæ¯”ä¾‹
 				double lLevel = 0;
-//				if(depth == 1 || depth == taskLevelSet.size()) //¸ÃĞ§¹û²»ÈçÖ»ÓĞÒ»¸öÌõ¼ş
+//				if(depth == 1 || depth == taskLevelSet.size()) //è¯¥æ•ˆæœä¸å¦‚åªæœ‰ä¸€ä¸ªæ¡ä»¶
 				if(depth == 1) 
 					lLevel = 0;
 				else
@@ -363,17 +363,17 @@ public class Workflow extends ArrayList<Task>{
 	    }	
 	}
 	
-	//0»ò1
+	//0æˆ–1
 	public void calcTaskBLLevels22(Map<Integer, List<Task>> taskLevelSet) { 
 		double speed = VM.SPEEDS[VM.FASTEST];
 		
 		ListIterator<Map.Entry<Integer, List<Task>>> tls= new ArrayList<Map.Entry<Integer, List<Task>>>(taskLevelSet.entrySet()).listIterator(taskLevelSet.size());
-	    while(tls.hasPrevious()) {  //ÄæĞò±éÀú	//´Ó³ö¿ÚÈÎÎñ¿ªÊ¼¼ÆËã
+	    while(tls.hasPrevious()) {  //é€†åºéå†	//ä»å‡ºå£ä»»åŠ¡å¼€å§‹è®¡ç®—
 	        Map.Entry<Integer, List<Task>> entry = tls.previous();  
 	        int depth = entry.getKey().intValue();
 	        List<Task> tasks = entry.getValue();
 	        for(Task task : tasks) {
-	        	//¼ÆËãÈÎÎñµÄupward rank
+	        	//è®¡ç®—ä»»åŠ¡çš„upward rank
 	        	double bLevel = 0;
 	        	double pURank = 0;
 				for(Edge outEdge : task.getOutEdges()){
@@ -385,7 +385,7 @@ public class Workflow extends ArrayList<Task>{
 //					if(1.5 != Double.MAX_VALUE){		// if theta = Double.MAX_VALUE, flag = 1
 //						double et = child.getTaskSize() / speed;
 //						double tt = outEdge.getDataSize() / VM.NETWORK_SPEED;
-//						double d = 1-Math.pow(1.5, -et / tt);	//ÍøÂç´«ÊäÊ±¼äÔ½´ó£¬dÈ¡ÖµÔ½½Ó½üÓÚ0
+//						double d = 1-Math.pow(1.5, -et / tt);	//ç½‘ç»œä¼ è¾“æ—¶é—´è¶Šå¤§ï¼Œdå–å€¼è¶Šæ¥è¿‘äº0
 //						if(d<random())
 //							flag = 0;
 //					}
@@ -393,9 +393,9 @@ public class Workflow extends ArrayList<Task>{
 //					pURank = Math.max(pURank, child.getpURank() + flag * outEdge.getDataSize() / VM.NETWORK_SPEED);
 				}
 				
-				//¼ÆËãÈÎÎñµÄlevel±ÈÀı
+				//è®¡ç®—ä»»åŠ¡çš„levelæ¯”ä¾‹
 				double lLevel = 0;
-//				if(depth == 1 || depth == taskLevelSet.size()) //2.0.1¸ÃĞ§¹û²»ÈçÖ»ÓĞÒ»¸öÌõ¼ş
+//				if(depth == 1 || depth == taskLevelSet.size()) //2.0.1è¯¥æ•ˆæœä¸å¦‚åªæœ‰ä¸€ä¸ªæ¡ä»¶
 				if(depth == 1) //2.0.0
 					lLevel = 0;
 				else
@@ -415,26 +415,26 @@ public class Workflow extends ArrayList<Task>{
 	    }	
 	}
 	
-	//Ö¸Êıº¯Êı
+	//æŒ‡æ•°å‡½æ•°
 	public void calcTaskBLLevels23(double theta, Map<Integer, List<Task>> taskLevelSet) { 
 		double speed = VM.SPEEDS[VM.FASTEST];
 		
 		ListIterator<Map.Entry<Integer, List<Task>>> tls= new ArrayList<Map.Entry<Integer, List<Task>>>(taskLevelSet.entrySet()).listIterator(taskLevelSet.size());
-	    while(tls.hasPrevious()) {  //ÄæĞò±éÀú	//´Ó³ö¿ÚÈÎÎñ¿ªÊ¼¼ÆËã
+	    while(tls.hasPrevious()) {  //é€†åºéå†	//ä»å‡ºå£ä»»åŠ¡å¼€å§‹è®¡ç®—
 	        Map.Entry<Integer, List<Task>> entry = tls.previous();  
 	        int depth = entry.getKey().intValue();
 	        List<Task> tasks = entry.getValue();
 	        for(Task task : tasks) {
-	        	//¼ÆËãÈÎÎñµÄupward rank
+	        	//è®¡ç®—ä»»åŠ¡çš„upward rank
 	        	double bLevel = 0;	
 				for(Edge outEdge : task.getOutEdges()){
 					Task child = outEdge.getDestination();
 					bLevel = Math.max(bLevel, child.getbLevel() + outEdge.getDataSize() / VM.NETWORK_SPEED);
 				}
 				
-				//¼ÆËãÈÎÎñµÄlevel±ÈÀı
+				//è®¡ç®—ä»»åŠ¡çš„levelæ¯”ä¾‹
 				double lLevel = 0;
-//				if(depth == 1 || depth == taskLevelSet.size()) //2.0.1¸ÃĞ§¹û²»ÈçÖ»ÓĞÒ»¸öÌõ¼ş
+//				if(depth == 1 || depth == taskLevelSet.size()) //2.0.1è¯¥æ•ˆæœä¸å¦‚åªæœ‰ä¸€ä¸ªæ¡ä»¶
 				if(depth == 1) //2.0.0
 					lLevel = 0;
 				else
@@ -452,7 +452,7 @@ public class Workflow extends ArrayList<Task>{
 		double speed = VM.SPEEDS[VM.FASTEST];
 		
 		ListIterator<Map.Entry<Integer, List<Task>>> tls= new ArrayList<Map.Entry<Integer, List<Task>>>(taskLevelSet.entrySet()).listIterator(taskLevelSet.size());
-	    while(tls.hasPrevious()) {  //ÄæĞò±éÀú	//´Ó³ö¿ÚÈÎÎñ¿ªÊ¼¼ÆËã
+	    while(tls.hasPrevious()) {  //é€†åºéå†	//ä»å‡ºå£ä»»åŠ¡å¼€å§‹è®¡ç®—
 	        Map.Entry<Integer, List<Task>> entry = tls.previous();  
 	        int depth = entry.getKey().intValue();
 	        List<Task> tasks = entry.getValue();
@@ -465,7 +465,7 @@ public class Workflow extends ArrayList<Task>{
 					if(1.5 != Double.MAX_VALUE){		// if theta = Double.MAX_VALUE, flag = 1
 						double et = child.getTaskSize() / speed;
 						double tt = outEdge.getDataSize() / VM.NETWORK_SPEED;
-						double d = 1-Math.pow(1.5, -et / tt);	//ÍøÂç´«ÊäÊ±¼äÔ½´ó£¬dÈ¡ÖµÔ½½Ó½üÓÚ0
+						double d = 1-Math.pow(1.5, -et / tt);	//ç½‘ç»œä¼ è¾“æ—¶é—´è¶Šå¤§ï¼Œdå–å€¼è¶Šæ¥è¿‘äº0
 						if(d<random())
 							flag = 0;
 					}
@@ -473,9 +473,9 @@ public class Workflow extends ArrayList<Task>{
 					pURank = Math.max(pURank, child.getpURank() + flag * outEdge.getDataSize() / VM.NETWORK_SPEED);
 				}
 				
-				//¼ÆËãÈÎÎñµÄlevel±ÈÀı
+				//è®¡ç®—ä»»åŠ¡çš„levelæ¯”ä¾‹
 				double lLevel = 0;
-//				if(depth == 1 || depth == taskLevelSet.size()) //2.0.1¸ÃĞ§¹û²»ÈçÖ»ÓĞÒ»¸öÌõ¼ş
+//				if(depth == 1 || depth == taskLevelSet.size()) //2.0.1è¯¥æ•ˆæœä¸å¦‚åªæœ‰ä¸€ä¸ªæ¡ä»¶
 				if(depth == 1) //2.0.0
 					lLevel = 0;
 				else
@@ -486,7 +486,7 @@ public class Workflow extends ArrayList<Task>{
 			}
 	    }
 //		Collections.sort(topoList, new Task.PURankComparator());
-//		System.out.println("Topological sort and pURank£º");
+//		System.out.println("Topological sort and pURankï¼š");
 //		for(Task t : topoList)
 //			System.out.println(t.getName() +"\t"+t.getpURank());
 	}
@@ -505,7 +505,7 @@ public class Workflow extends ArrayList<Task>{
 				if(theta != Double.MAX_VALUE){		// if theta = Double.MAX_VALUE, flag = 1
 					double et = child.getTaskSize() / speed;
 					double tt = outEdge.getDataSize() / VM.NETWORK_SPEED;
-					double d = 1-Math.pow(theta, -et / tt);	//ÍøÂç´«ÊäÊ±¼äÔ½´ó£¬dÈ¡ÖµÔ½½Ó½üÓÚ0
+					double d = 1-Math.pow(theta, -et / tt);	//ç½‘ç»œä¼ è¾“æ—¶é—´è¶Šå¤§ï¼Œdå–å€¼è¶Šæ¥è¿‘äº0
 					if(d<random())
 						flag = 0;
 				}
@@ -515,12 +515,12 @@ public class Workflow extends ArrayList<Task>{
 			task.setpURank(pURank + task.getTaskSize() / speed);
 		}
 //		Collections.sort(topoList, new Task.PURankComparator());
-//		System.out.println("Topological sort and pURank£º");
+//		System.out.println("Topological sort and pURankï¼š");
 //		for(Task t : topoList)
 //			System.out.println(t.getName() +"\t"+t.getpURank());
 	}
 	
-	//½öÎªHGSAÔö¼Ó
+	//ä»…ä¸ºHGSAå¢åŠ 
 	private double deadlineFactor;
 	public double getDeadlineFactor(){
 		return deadlineFactor;
@@ -551,14 +551,14 @@ public class Workflow extends ArrayList<Task>{
 				if(nameTaskMapping.containsKey(id))		//id conflicts
 					throw new RuntimeException();
 				double runtime = Double.parseDouble(attrs.getValue("runtime"));
-				if(runtime < 0) //ID00622µÄruntime=-0.18
+				if(runtime < 0) //ID00622çš„runtime=-0.18
 					runtime = 0-runtime;
-				if(runtime == 0) //ID00616µÄruntime=0
+				if(runtime == 0) //ID00616çš„runtime=0
 					runtime = 0.0000001;
 				Task t = new Task(id, runtime);
 //				Task t = new Task(id, runtime*1000);
 				
-				//¼ÆËãÈÎÎñµÄÆ½¾ùÖ´ĞĞÊ±¼ä
+				//è®¡ç®—ä»»åŠ¡çš„å¹³å‡æ‰§è¡Œæ—¶é—´
 				double times = 0;
 				for(int i = 0; i < VM.TYPE_NO; i++) {
 					times += t.getTaskSize()/VM.SPEEDS[i];
@@ -575,7 +575,7 @@ public class Workflow extends ArrayList<Task>{
 				long fileSize = Long.parseLong(attrs.getValue("size"));
 				if(fileSize < 0)
 					fileSize = 0-fileSize;
-//				long fileSize = 0; //²»¿¼ÂÇ´«ÊäÊ±¼ä
+//				long fileSize = 0; //ä¸è€ƒè™‘ä¼ è¾“æ—¶é—´
 				TransferData td = transferData.get(filename);
 				if(td == null){
 					td = new TransferData(filename, fileSize);

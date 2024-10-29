@@ -10,17 +10,17 @@ class HashMapTest
 	{
 		HashMap<VM,String> hm = new HashMap<VM,String>();
 
-		//ÏëÒª±£Ö¤ÓĞĞò¡£´æÈëµÄË³ĞòºÍÈ¡³öµÄË³ĞòÒ»ÖÂ¡£
-		//ÕâÊ±¿ÉÒÔÓÃÒ»¸öÔÚ¹şÏ£±íÖĞ¼ÓÈëÁ´±í½á¹¹µÄÒ»¸ö¶ÔÏóLinkedHashMap¡£¸Ã¶ÔÏóÊÇHashMapµÄ×ÓÀà¡£
+		//æƒ³è¦ä¿è¯æœ‰åºã€‚å­˜å…¥çš„é¡ºåºå’Œå–å‡ºçš„é¡ºåºä¸€è‡´ã€‚
+		//è¿™æ—¶å¯ä»¥ç”¨ä¸€ä¸ªåœ¨å“ˆå¸Œè¡¨ä¸­åŠ å…¥é“¾è¡¨ç»“æ„çš„ä¸€ä¸ªå¯¹è±¡LinkedHashMapã€‚è¯¥å¯¹è±¡æ˜¯HashMapçš„å­ç±»ã€‚
 		hm = new LinkedHashMap<VM,String>();
 		VM v1 = new VM(3);
 		VM v2 = DeepCopyUtil.copy(v1);
-		hm.put(new VM(0),"±±¾©");
-		hm.put(new VM(1),"ÉÏº£");
-		hm.put(v1,"¹ãÖİ");
-		hm.put(v2,"Ìì½ò");
+		hm.put(new VM(0),"åŒ—äº¬");
+		hm.put(new VM(1),"ä¸Šæµ·");
+		hm.put(v1,"å¹¿å·");
+		hm.put(v2,"å¤©æ´¥");
 
-//		hm.put(new Student("lisi4",24),"ÌúÁë");
+//		hm.put(new Student("lisi4",24),"é“å²­");
 
 
 		Set<Map.Entry<VM,String>> entrySet = hm.entrySet();
@@ -39,15 +39,15 @@ class HashMapTest
 		
 //		HashMap<Student,String> hm = new HashMap<Student,String>();
 
-//		//ÏëÒª±£Ö¤ÓĞĞò¡£´æÈëµÄË³ĞòºÍÈ¡³öµÄË³ĞòÒ»ÖÂ¡£
-//		//ÕâÊ±¿ÉÒÔÓÃÒ»¸öÔÚ¹şÏ£±íÖĞ¼ÓÈëÁ´±í½á¹¹µÄÒ»¸ö¶ÔÏóLinkedHashMap¡£¸Ã¶ÔÏóÊÇHashMapµÄ×ÓÀà¡£
+//		//æƒ³è¦ä¿è¯æœ‰åºã€‚å­˜å…¥çš„é¡ºåºå’Œå–å‡ºçš„é¡ºåºä¸€è‡´ã€‚
+//		//è¿™æ—¶å¯ä»¥ç”¨ä¸€ä¸ªåœ¨å“ˆå¸Œè¡¨ä¸­åŠ å…¥é“¾è¡¨ç»“æ„çš„ä¸€ä¸ªå¯¹è±¡LinkedHashMapã€‚è¯¥å¯¹è±¡æ˜¯HashMapçš„å­ç±»ã€‚
 //		hm = new LinkedHashMap<Student,String>();
 //
-//		hm.put(new Student("lisi1",21),"±±¾©");
-//		hm.put(new Student("lisi1",21),"ÉÏº£");
-//		hm.put(new Student("lisi2",22),"¹ãÖİ");
-//		hm.put(new Student("lisi6",26),"Ìì½ò");
-////		hm.put(new Student("lisi4",24),"ÌúÁë");
+//		hm.put(new Student("lisi1",21),"åŒ—äº¬");
+//		hm.put(new Student("lisi1",21),"ä¸Šæµ·");
+//		hm.put(new Student("lisi2",22),"å¹¿å·");
+//		hm.put(new Student("lisi6",26),"å¤©æ´¥");
+////		hm.put(new Student("lisi4",24),"é“å²­");
 //
 //
 //		Set<Map.Entry<Student,String>> entrySet = hm.entrySet();
@@ -67,9 +67,9 @@ class HashMapTest
 }
 
 /*
-Òª±£Ö¤Ñ§Éú¶ÔÏóµÄÎ¨Ò»ĞÔ¡£ĞèÒª½¨Á¢Ñ§Éú¶ÔÏó×ÔÉíµÄÅĞ¶ÏÏàÍ¬µÄÒÀ¾İ¡£
-¶øÇÒÒª¸ù¾İÑ§ÉúµÄÅĞ¶ÏÌõ¼şÀ´¶¨ÒåÒÀ¾İ¡£
-ÒòÎªÊÇ´æ·ÅÁËHash±íÖĞ£¬ËùÒÔÒª¸²¸ÇhashCode·½·¨£¬ºÍequals·½·¨¡£
+è¦ä¿è¯å­¦ç”Ÿå¯¹è±¡çš„å”¯ä¸€æ€§ã€‚éœ€è¦å»ºç«‹å­¦ç”Ÿå¯¹è±¡è‡ªèº«çš„åˆ¤æ–­ç›¸åŒçš„ä¾æ®ã€‚
+è€Œä¸”è¦æ ¹æ®å­¦ç”Ÿçš„åˆ¤æ–­æ¡ä»¶æ¥å®šä¹‰ä¾æ®ã€‚
+å› ä¸ºæ˜¯å­˜æ”¾äº†Hashè¡¨ä¸­ï¼Œæ‰€ä»¥è¦è¦†ç›–hashCodeæ–¹æ³•ï¼Œå’Œequalsæ–¹æ³•ã€‚
 */
 class Student
 {

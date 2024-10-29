@@ -18,7 +18,7 @@ public class ICPCP implements Scheduler {
 	
 	public Solution schedule(Workflow wf) {
 		this.wf = wf;
-		//taskµÄisAssignedÖÃÎªfalse
+		//taskçš„isAssignedç½®ä¸ºfalse
 		for(int i = 0; i < wf.size(); i++) {
 			Task t = wf.get(i);
 //			t.setAssigned(false);
@@ -50,7 +50,7 @@ public class ICPCP implements Scheduler {
 		for(int i=1; i<wf.size(); i++){		// compute EST, EFT, critical parent via Eqs. 1 and 2; skip entry task
 			Task task = wf.get(i);
 
-			//´Ë´¦EST¶¨Òå²»¿¼ÂÇresourceµÄavailable time£¬ÇÒ»¹Òª¼ÆËãcritical parent£»ËùÒÔÃ»ÓĞÊ¹ÓÃsolution.calcEST·½·¨
+			//æ­¤å¤„ESTå®šä¹‰ä¸è€ƒè™‘resourceçš„available timeï¼Œä¸”è¿˜è¦è®¡ç®—critical parentï¼›æ‰€ä»¥æ²¡æœ‰ä½¿ç”¨solution.calcESTæ–¹æ³•
 			double EST = -1;
 			double ESTForCritical = -1;
 			Task criticalParent = null;		
@@ -69,7 +69,7 @@ public class ICPCP implements Scheduler {
 				task.setEST(EST);
 				task.setEFT(EST + task.getTaskSize() / bestVMSpeed);
 			}
-			//·ÖÅäÁËµÄ»¹ĞèÒª¸üĞÂcritical parent:ÒòÎªtask aÔÚassignParents£¬¿ÉÄÜÓĞÁ½¸öparent bºÍc£¬ËùÒÔ±ØĞëÒª¸üĞÂÁË
+			//åˆ†é…äº†çš„è¿˜éœ€è¦æ›´æ–°critical parent:å› ä¸ºtask aåœ¨assignParentsï¼Œå¯èƒ½æœ‰ä¸¤ä¸ªparent bå’Œcï¼Œæ‰€ä»¥å¿…é¡»è¦æ›´æ–°äº†
 			task.setCriticalParent(criticalParent);	
 		}
 
@@ -87,7 +87,7 @@ public class ICPCP implements Scheduler {
 				Task child = e.getDestination();
 				double finishTime;
 				if(child.isAssigned())	
-					finishTime = child.getAST() - e.getDataSize() / VM.NETWORK_SPEED; //ÓëÂÛÎÄÖĞ²»Í¬£¬ÂÛÎÄÖĞµÄÓĞÎÊÌâ
+					finishTime = child.getAST() - e.getDataSize() / VM.NETWORK_SPEED; //ä¸è®ºæ–‡ä¸­ä¸åŒï¼Œè®ºæ–‡ä¸­çš„æœ‰é—®é¢˜
 				else
 					finishTime = child.getLFT() - child.getTaskSize()/bestVMSpeed - e.getDataSize() / VM.NETWORK_SPEED;
 				lft = Math.min(lft, finishTime);
@@ -121,18 +121,18 @@ public class ICPCP implements Scheduler {
 		}
 	}
 	
-	//choose the cheapest service for PCP; ´ÓexistingºÍnew VMÖĞÒ»ÆğÑ°ÕÒ×î±ãÒËµÄ£»ÂÛÎÄÀïµÄÖ»ÒªexistingÀïÕÒµ½¾ÍÍ£Ö¹
+	//choose the cheapest service for PCP; ä»existingå’Œnew VMä¸­ä¸€èµ·å¯»æ‰¾æœ€ä¾¿å®œçš„ï¼›è®ºæ–‡é‡Œçš„åªè¦existingé‡Œæ‰¾åˆ°å°±åœæ­¢
 	private void assignPath(List<Task> PCP){	//Algorithm 3 in the paper; the actual situation is more complex
 		double minExtraCost = Double.MAX_VALUE;	//the criterion to select VM
 		List<Allocation> bestList = null;
 		
-aa:		for(VM vm : solution.keySet()){			//search from existing VMs. ±ØÒªÌõ¼ş£º1.Ê¹ÓÃÊ±¼ä²»³åÍ»£»2.Âú×ãLFT
+aa:		for(VM vm : solution.keySet()){			//search from existing VMs. å¿…è¦æ¡ä»¶ï¼š1.ä½¿ç”¨æ—¶é—´ä¸å†²çªï¼›2.æ»¡è¶³LFT
 			List<Allocation> tmpList = new ArrayList<Allocation>();
 			for(int i = 0; i<PCP.size(); i++){		
 				Task task = PCP.get(i);
 				double taskEST = task.getEST();	
 				if(i > 0)
-					taskEST = Math.max(taskEST, tmpList.get(i-1).getFinishTime()); //PCPÖĞµÄÈÎÎñÃ»ÓĞ´«ÊäÊ±¼ä
+					taskEST = Math.max(taskEST, tmpList.get(i-1).getFinishTime()); //PCPä¸­çš„ä»»åŠ¡æ²¡æœ‰ä¼ è¾“æ—¶é—´
 				if(taskEST + task.getTaskSize() / vm.getSpeed() > task.getLFT() + EvaluateYLW.E)//lft is not met, skip vm
 					continue aa;
 				
@@ -142,7 +142,7 @@ aa:		for(VM vm : solution.keySet()){			//search from existing VMs. ±ØÒªÌõ¼ş£º1.Ê
 				else
 					continue aa;
 			}
-			//·ÑÓÃ¼ÆËã£¬ÕâÀïÊÇÕû¸övmÒ»Ö±±£³ÖaliveµÄ¼ÆËã·½Ê½
+			//è´¹ç”¨è®¡ç®—ï¼Œè¿™é‡Œæ˜¯æ•´ä¸ªvmä¸€ç›´ä¿æŒaliveçš„è®¡ç®—æ–¹å¼
 			double newTotalUsedTime = Math.max(tmpList.get(tmpList.size() - 1).getFinishTime(), solution.getVMLeaseEndTime(vm))
 						- Math.min(tmpList.get(0).getStartTime(), solution.getVMLeaseStartTime(vm));
 			double extraCost = Math.ceil(newTotalUsedTime / VM.INTERVAL) * vm.getUnitCost() - solution.calcVMCost(vm); //oldVMTotalCost
@@ -226,9 +226,9 @@ aa:		for(VM vm : solution.keySet()){			//search from existing VMs. ±ØÒªÌõ¼ş£º1.Ê
 				timeSlotEnd	= list.get(i).getStartTime();
 			}
 			double slackTime = LFT - EST - task.getTaskSize()/vm.getSpeed();
-			if(EST + slackTime >= timeSlotStart){			//condition1£ºstartTime satisfies
+			if(EST + slackTime >= timeSlotStart){			//condition1ï¼šstartTime satisfies
 				double startTime = Math.max(timeSlotStart, EST);
-				//condition2£ºslot is large enough to support this task
+				//condition2ï¼šslot is large enough to support this task
 				if(timeSlotEnd - startTime >= task.getTaskSize() / vm.getSpeed())	
 					return startTime;
 			}

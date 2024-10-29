@@ -1,4 +1,4 @@
-result£º´òlabelµÄ½á¹û
-result1£ºminMaxCostÒÔ¼°µ÷¶È½á¹û
-EvaluateYLW.java£ºÎªÃ¿¸ö¹¤×÷Á÷´òlabel
-Main.java£ºËã·¨ĞÔÄÜ±È½Ï
+resultï¼šæ‰“labelçš„ç»“æœ
+result1ï¼šminMaxCostä»¥åŠè°ƒåº¦ç»“æœ
+EvaluateYLW.javaï¼šä¸ºæ¯ä¸ªå·¥ä½œæµæ‰“label
+Main.javaï¼šç®—æ³•æ€§èƒ½æ¯”è¾ƒ

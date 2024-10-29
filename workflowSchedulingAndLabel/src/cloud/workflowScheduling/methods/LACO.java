@@ -44,7 +44,7 @@ public class LACO implements Scheduler {
 				heuristic[t.getId()] = t.getpURank();
 			
 			
-//			/*´òÓ¡Æô·¢Òò×ÓºÍĞÅÏ¢ËØ*/
+//			/*æ‰“å°å¯å‘å› å­å’Œä¿¡æ¯ç´ */
 //			if(iterIndex == 10) {
 //			BufferedWriter bw;
 //			try {
@@ -53,11 +53,11 @@ public class LACO implements Scheduler {
 //				{df.setRoundingMode(RoundingMode.HALF_UP); }
 //				String text;
 //				
-//				//´òÓ¡Æô·¢Òò×Ó
+//				//æ‰“å°å¯å‘å› å­
 //				text = "";
-//				bw.write("Æô·¢Òò×Ó£º");
+//				bw.write("å¯å‘å› å­ï¼š");
 //				bw.newLine();
-//				for(int i= 0; i < wf.size(); i++){ //´òÓ¡Í·
+//				for(int i= 0; i < wf.size(); i++){ //æ‰“å°å¤´
 //					bw.write(String.format("%4d", i)+"\t");
 //				}
 //				bw.newLine();
@@ -70,12 +70,12 @@ public class LACO implements Scheduler {
 //				bw.newLine();
 //				bw.newLine();
 //				
-//				//´òÓ¡ĞÅÏ¢ËØ
+//				//æ‰“å°ä¿¡æ¯ç´ 
 //				text = "";
-//				bw.write("ĞÅÏ¢ËØ£º");
+//				bw.write("ä¿¡æ¯ç´ ï¼š");
 //				bw.newLine();
 //				bw.write("\t");
-//				for(int i= 0; i < wf.size(); i++){ //´òÓ¡Í·
+//				for(int i= 0; i < wf.size(); i++){ //æ‰“å°å¤´
 //					bw.write(String.format("%4d", i)+"\t");
 //				}
 //				bw.newLine();
@@ -128,10 +128,10 @@ public class LACO implements Scheduler {
 				}
 			}
 			
-			//¸üĞÂÈ«¾Ö×îºÃ½â
+			//æ›´æ–°å…¨å±€æœ€å¥½è§£
 			if(gbAnt==null || lbAnt.solution.isBetterThan(gbAnt.solution, epsilonDeadline)){
 				gbAnt = lbAnt;
-//				System.out.printf("Iteration index£º%3d\t%5.2f\t%5.2f\t%5.2f\n",iterIndex,
+//				System.out.printf("Iteration indexï¼š%3d\t%5.2f\t%5.2f\t%5.2f\n",iterIndex,
 //						gbAnt.getSolution().calcCost(),
 //						gbAnt.getSolution().calcMakespan(),
 //						epsilonDeadline);
@@ -149,8 +149,8 @@ public class LACO implements Scheduler {
 		}
 		
 		public Solution constructASolution(){
-    		List<Task> L = new ArrayList<Task>();	//Empty list that will contain the sorted elements ÒÑ¾­ÅÄºÃĞòµÄ¼¯ºÏ
-    		List<Task> S = new ArrayList<Task>();	//S: Set of all nodes with no incoming edges ¿Éµ÷¶È¼¯ºÏ	
+    		List<Task> L = new ArrayList<Task>();	//Empty list that will contain the sorted elements å·²ç»æ‹å¥½åºçš„é›†åˆ
+    		List<Task> S = new ArrayList<Task>();	//S: Set of all nodes with no incoming edges å¯è°ƒåº¦é›†åˆ	
     		S.add(wf.get(0));		
 
     		for(Task t : wf)		//set topoCount to 0
@@ -163,7 +163,7 @@ public class LACO implements Scheduler {
     			if(tIndex==0)	
     				task = S.remove(0);	//entry task
     			else
-    				task = chooseNextTask(taskIdList[tIndex-1], S); //???Ô´´úÂëÊÇtask = chooseNextTask(taskIdList[tIndex], S);
+    				task = chooseNextTask(taskIdList[tIndex-1], S); //???æºä»£ç æ˜¯task = chooseNextTask(taskIdList[tIndex], S);
     			
     			taskIdList[tIndex] = task.getId();
     			tIndex++;
@@ -183,7 +183,7 @@ public class LACO implements Scheduler {
         
         private Task chooseNextTask(int curTaskId, List<Task> S) {
         	int chosenIndex = 0;
-        	if(Math.random()<0.9) { //Ñ¡ÔñcurTaskIdĞĞÖĞĞÅÏ¢ËØ×î´óµÄ×ÊÔ´
+        	if(Math.random()<0.9) { //é€‰æ‹©curTaskIdè¡Œä¸­ä¿¡æ¯ç´ æœ€å¤§çš„èµ„æº
         		double maxPheromone = -1;
         		int indexInS = 0;
         		for (Task t : S) {
@@ -213,7 +213,7 @@ public class LACO implements Scheduler {
         }
     	
         /**
-         * ĞÅÏ¢ËØµÄ¸üĞÂ
+         * ä¿¡æ¯ç´ çš„æ›´æ–°
          */
         public void releasePheromone() {
         	double value = 1 / solution.calcCost() + 0.5;

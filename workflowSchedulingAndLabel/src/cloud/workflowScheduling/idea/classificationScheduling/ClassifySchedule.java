@@ -23,7 +23,7 @@ public class ClassifySchedule implements Scheduler {
 	}
 	
 	public Solution schedule(Workflow wf) {
-		//µ÷¶ÈÇ°£¬ÏÈ³õÊ¼»¯³ÉÔ±±äÁ¿
+		//è°ƒåº¦å‰ï¼Œå…ˆåˆå§‹åŒ–æˆå‘˜å˜é‡
 		
 		wf.calcTaskLevels();	
 		
@@ -31,7 +31,7 @@ public class ClassifySchedule implements Scheduler {
 		Collections.sort(tasks, new Task.BLevelComparator()); 	
 		Collections.reverse(tasks);	//sort based on pURank, larger first
 		
-		//¸ù¾İsubDFlagÑ¡Ôñ²»Í¬µÄ·½·¨
+		//æ ¹æ®subDFlagé€‰æ‹©ä¸åŒçš„æ–¹æ³•
 		if(subDFlag.equals("1"))
 			this.calSubD_uRank(wf, tasks, wf.getDeadline());
 		else if(subDFlag.equals("2"))
@@ -41,7 +41,7 @@ public class ClassifySchedule implements Scheduler {
 		else if(subDFlag.equals("4"))
 			this.calSubD_Method3(wf, tasks, wf.getDeadline());
 		else {
-			System.out.println("ÎŞĞ§µÄ·ÖÀà½á¹û");
+			System.out.println("æ— æ•ˆçš„åˆ†ç±»ç»“æœ");
 			System.exit(0);
 		}
 		
@@ -75,13 +75,13 @@ public class ClassifySchedule implements Scheduler {
 //			}
 			Allocation alloc = getMinCostVM(task, solution,proSubDeadline, i);
 
-			//µ±CPLength>deadlineÊ±£¬×ÓÆÚÏŞµÄ»®·Ö¿ÉÄÜµ¼ÖÂEFT>subDeadline£»ËùÒÔ±ØĞë¿¼ÂÇ×ÓÆÚÏŞ²»Âú×ãµÄÇé¿ö£º´ËÊ±Ñ¡Ôñminimal EFTµÄVM
+			//å½“CPLength>deadlineæ—¶ï¼Œå­æœŸé™çš„åˆ’åˆ†å¯èƒ½å¯¼è‡´EFT>subDeadlineï¼›æ‰€ä»¥å¿…é¡»è€ƒè™‘å­æœŸé™ä¸æ»¡è¶³çš„æƒ…å†µï¼šæ­¤æ—¶é€‰æ‹©minimal EFTçš„VM
 			if(alloc == null){			//select a vm which allows EFT
 				alloc = getMinEFTVM(task, solution, proSubDeadline, i);
 				
 				VM vm = alloc.getVM();
 				while(alloc.getFinishTime() > proSubDeadline + EvaluateYLW.E && vm.getType() < VM.FASTEST){
-					solution.updateVM(vm);			//upgradeÈô½øĞĞÕû¸ö½âµÄ¸üĞÂ£»¸´ÔÓ¶È½«Ôö³¤Ì«¶à¡£
+					solution.updateVM(vm);			//upgradeè‹¥è¿›è¡Œæ•´ä¸ªè§£çš„æ›´æ–°ï¼›å¤æ‚åº¦å°†å¢é•¿å¤ªå¤šã€‚
 					alloc.setStartTime(solution.calcEST(task, vm));
 					alloc.setFinishTime(solution.calcEST(task, vm) + task.getTaskSize()/vm.getSpeed());
 				}
@@ -217,7 +217,7 @@ public class ClassifySchedule implements Scheduler {
 	}
 	
 	private void calSubD_Method3(Workflow wf, List<Task> tasks, double deadline) {
-		int workflowDepth= 0; //¼´Èë¿ÚÈÎÎñµÄdepth
+		int workflowDepth= 0; //å³å…¥å£ä»»åŠ¡çš„depth
 		double alphaDeadline = 0.0;  
 		double deadlineFactor = 0.0;
 		Map<Integer, List<Task>> taskLevelSet = new LinkedHashMap<Integer, List<Task>>();
@@ -226,7 +226,7 @@ public class ClassifySchedule implements Scheduler {
 
 		Task entryTask = wf.get(0);
 		
-		//¼ÆËãÈÎÎñdepth, ´Ó³ö¿ÚÈÎÎñ¿ªÊ¼
+		//è®¡ç®—ä»»åŠ¡depth, ä»å‡ºå£ä»»åŠ¡å¼€å§‹
 		List<Task> exits = new ArrayList<Task>();
 		for(Task t : wf) {
 			if(t.getOutEdges().isEmpty())
@@ -238,7 +238,7 @@ public class ClassifySchedule implements Scheduler {
         }	
 		workflowDepth = entryTask.getDepth();
 		
-		//¼ÆËãTLS
+		//è®¡ç®—TLS
 		for(int i = workflowDepth; i > 0; i--){	
 			taskLevelSet.put(Integer.valueOf(i), new ArrayList<Task>());
 		}
@@ -248,7 +248,7 @@ public class ClassifySchedule implements Scheduler {
 			taskLevelSet.get(Integer.valueOf(depth)).add(task);
 		}
 		
-		//³õÊ¼»¯Ã¿²ãlevelµÄsubD²¢¼ÆËãEFT£¨ÎÄÏ×ÖĞµÄ¼ÆËãEFT¿¼ÂÇÁËlevelµÄsubD£©£¬¹«Ê½13¡¢14
+		//åˆå§‹åŒ–æ¯å±‚levelçš„subDå¹¶è®¡ç®—EFTï¼ˆæ–‡çŒ®ä¸­çš„è®¡ç®—EFTè€ƒè™‘äº†levelçš„subDï¼‰ï¼Œå…¬å¼13ã€14
 		for(int i = 0; i < workflowDepth+1; i++){	
 			initialSubDlevel.add(-1.0);
 			fbsSubDlevel.add(-1.0);
@@ -257,14 +257,14 @@ public class ClassifySchedule implements Scheduler {
 		entryTask.setEST(0);
 		entryTask.setEFT(0);
 		initialSubDlevel.set(entryTask.getDepth(), 0.0); 
-		for(Map.Entry<Integer, List<Task>> entry : taskLevelSet.entrySet()){ //°´ÕÕlevel±éÀúËùÓĞÈÎÎñ
+		for(Map.Entry<Integer, List<Task>> entry : taskLevelSet.entrySet()){ //æŒ‰ç…§leveléå†æ‰€æœ‰ä»»åŠ¡
 			if(entry.getKey().equals(workflowDepth))
 				continue;
-			else { //±éÀúµ±Ç°levelÖĞËùÓĞÈÎÎñ£¬¼ÆËãÆäEFT, ²¢¼ÆËãµ±Ç°levelµÄsubD
+			else { //éå†å½“å‰levelä¸­æ‰€æœ‰ä»»åŠ¡ï¼Œè®¡ç®—å…¶EFT, å¹¶è®¡ç®—å½“å‰levelçš„subD
 				double subD = 0.0;
 				List<Task> taskSet = entry.getValue();
 				for(Task task : taskSet) {
-					double EST = initialSubDlevel.get(task.getDepth()+1); //³õÊ¼»¯ÈÎÎñËùÔÚlevelµÄÉÏÒ»¼¶levelµÄsubD
+					double EST = initialSubDlevel.get(task.getDepth()+1); //åˆå§‹åŒ–ä»»åŠ¡æ‰€åœ¨levelçš„ä¸Šä¸€çº§levelçš„subD
 					for(Edge e: task.getInEdges()){
 						Task parent = e.getSource();
 						double startTime = e.getDataSize()/VM.NETWORK_SPEED;
@@ -280,7 +280,7 @@ public class ClassifySchedule implements Scheduler {
 			}
 		}
 		
-		//¼ÆËã¹«Ê½15
+		//è®¡ç®—å…¬å¼15
 		fbsSubDlevel.set(workflowDepth, 0.0);
 		alphaDeadline = fbsSubDlevel.get(workflowDepth)*taskLevelSet.get(Integer.valueOf(workflowDepth)).size();
 		for(int i = workflowDepth-1; i > 0; i--){
@@ -288,13 +288,13 @@ public class ClassifySchedule implements Scheduler {
 			alphaDeadline += fbsSubDlevel.get(i)*taskLevelSet.get(Integer.valueOf(i)).size();
 		}
 		
-		//¹«Ê½16
+		//å…¬å¼16
 		deadlineFactor = (wf.getDeadline()-initialSubDlevel.get(1))/alphaDeadline;
 		
-		//¹«Ê½17 ¼ÆËãÃ¿Ò»²ãµÄsubD 
-		//ÂÛÎÄ¹«Ê½£¬ÎŞÀÛ¼Ó£¬ÊÇ´íµÄ£¬ÏÂÃæ²ÉÓÃµÄÊÇÀÛ¼ÓµÄ·½·¨½øĞĞ¾ÀÕı£¬»òĞíÒ²¿ÉÒÔÍ¨¹ı¸üĞÂEFTÀ´¾ÀÕı
-//		for(Map.Entry<Integer, List<Task>> entry : taskLevelSet.entrySet()){ //°´ÕÕlevel±éÀúËùÓĞÈÎÎñ
-//			double subDlevel = 0; //¸ù¾İ¹¤×÷Á÷deadline¼ÆËãµÄÃ¿²ãµÄÊµ¼ÊsubD
+		//å…¬å¼17 è®¡ç®—æ¯ä¸€å±‚çš„subD 
+		//è®ºæ–‡å…¬å¼ï¼Œæ— ç´¯åŠ ï¼Œæ˜¯é”™çš„ï¼Œä¸‹é¢é‡‡ç”¨çš„æ˜¯ç´¯åŠ çš„æ–¹æ³•è¿›è¡Œçº æ­£ï¼Œæˆ–è®¸ä¹Ÿå¯ä»¥é€šè¿‡æ›´æ–°EFTæ¥çº æ­£
+//		for(Map.Entry<Integer, List<Task>> entry : taskLevelSet.entrySet()){ //æŒ‰ç…§leveléå†æ‰€æœ‰ä»»åŠ¡
+//			double subDlevel = 0; //æ ¹æ®å·¥ä½œæµdeadlineè®¡ç®—çš„æ¯å±‚çš„å®é™…subD
 //			int level = entry.getKey().intValue();
 //			List<Task> taskSet = entry.getValue();
 //			subDlevel = this.initialSubDlevel.get(level) + 
@@ -303,10 +303,10 @@ public class ClassifySchedule implements Scheduler {
 //				task.setSubD(subDlevel);
 //			}	
 //		}
-		//ÂÛÎÄ¹«Ê½£¬ÓĞÀÛ¼Ó
-		double sumFbsSubDlevel = 0; //Ã¿Ò»²ãlevel³¤¶ÈµÄÀÛ¼Ó
-		for(Map.Entry<Integer, List<Task>> entry : taskLevelSet.entrySet()){ //°´ÕÕlevel±éÀúËùÓĞÈÎÎñ
-			double subDlevel = 0; //¸ù¾İ¹¤×÷Á÷deadline¼ÆËãµÄÃ¿²ãµÄÊµ¼ÊsubD
+		//è®ºæ–‡å…¬å¼ï¼Œæœ‰ç´¯åŠ 
+		double sumFbsSubDlevel = 0; //æ¯ä¸€å±‚levelé•¿åº¦çš„ç´¯åŠ 
+		for(Map.Entry<Integer, List<Task>> entry : taskLevelSet.entrySet()){ //æŒ‰ç…§leveléå†æ‰€æœ‰ä»»åŠ¡
+			double subDlevel = 0; //æ ¹æ®å·¥ä½œæµdeadlineè®¡ç®—çš„æ¯å±‚çš„å®é™…subD
 			int level = entry.getKey().intValue();
 			List<Task> taskSet = entry.getValue();
 			sumFbsSubDlevel += fbsSubDlevel.get(level)*taskLevelSet.get(Integer.valueOf(level)).size();
@@ -318,7 +318,7 @@ public class ClassifySchedule implements Scheduler {
 	}
 	
 	private void calSubD_Method6(Workflow wf, List<Task> tasks, double deadline) {
-		int workflowDepth= 0; //¼´Èë¿ÚÈÎÎñµÄdepth
+		int workflowDepth= 0; //å³å…¥å£ä»»åŠ¡çš„depth
 		double alphaDeadline = 0.0;  
 		Map<Integer, List<Task>> taskLevelSet = new LinkedHashMap<Integer, List<Task>>();
 		List<Double> initialSubDlevel = new ArrayList<Double>();
@@ -326,7 +326,7 @@ public class ClassifySchedule implements Scheduler {
 		
 		Task entryTask = wf.get(0);
 		
-		//¼ÆËãÈÎÎñdepth, ´Ó³ö¿ÚÈÎÎñ¿ªÊ¼
+		//è®¡ç®—ä»»åŠ¡depth, ä»å‡ºå£ä»»åŠ¡å¼€å§‹
 		List<Task> exits = new ArrayList<Task>();
 		for(Task t : wf) {
 			if(t.getOutEdges().isEmpty())
@@ -338,7 +338,7 @@ public class ClassifySchedule implements Scheduler {
         }	
 		workflowDepth = entryTask.getDepth();
 		
-		//¼ÆËãTLS
+		//è®¡ç®—TLS
 		for(int i = workflowDepth; i > 0; i--){	
 			taskLevelSet.put(Integer.valueOf(i), new ArrayList<Task>());
 		}
@@ -348,7 +348,7 @@ public class ClassifySchedule implements Scheduler {
 			taskLevelSet.get(Integer.valueOf(depth)).add(task);
 		}
 		
-		//³õÊ¼»¯Ã¿²ãlevelµÄsubD²¢¼ÆËãEFT£¨ÎÄÏ×ÖĞµÄ¼ÆËãEFT¿¼ÂÇÁËlevelµÄsubD£©£¬¹«Ê½12¡¢13
+		//åˆå§‹åŒ–æ¯å±‚levelçš„subDå¹¶è®¡ç®—EFTï¼ˆæ–‡çŒ®ä¸­çš„è®¡ç®—EFTè€ƒè™‘äº†levelçš„subDï¼‰ï¼Œå…¬å¼12ã€13
 		for(int i = 0; i < workflowDepth+1; i++){	
 			initialSubDlevel.add(-1.0);
 			fbsSubDlevel.add(-1.0);
@@ -357,14 +357,14 @@ public class ClassifySchedule implements Scheduler {
 		entryTask.setEST(0);
 		entryTask.setEFT(0);
 		initialSubDlevel.set(entryTask.getDepth(), 0.0); 
-		for(Map.Entry<Integer, List<Task>> entry : taskLevelSet.entrySet()){ //°´ÕÕlevel±éÀúËùÓĞÈÎÎñ
+		for(Map.Entry<Integer, List<Task>> entry : taskLevelSet.entrySet()){ //æŒ‰ç…§leveléå†æ‰€æœ‰ä»»åŠ¡
 			if(entry.getKey().equals(workflowDepth))
 				continue;
-			else { //±éÀúµ±Ç°levelÖĞËùÓĞÈÎÎñ£¬¼ÆËãÆäEFT, ²¢¼ÆËãµ±Ç°levelµÄsubD
+			else { //éå†å½“å‰levelä¸­æ‰€æœ‰ä»»åŠ¡ï¼Œè®¡ç®—å…¶EFT, å¹¶è®¡ç®—å½“å‰levelçš„subD
 				double subD = 0.0;
 				List<Task> taskSet = entry.getValue();
 				for(Task task : taskSet) {
-					double EST = initialSubDlevel.get(task.getDepth()+1); //³õÊ¼»¯ÈÎÎñËùÔÚlevelµÄÉÏÒ»¼¶levelµÄsubD
+					double EST = initialSubDlevel.get(task.getDepth()+1); //åˆå§‹åŒ–ä»»åŠ¡æ‰€åœ¨levelçš„ä¸Šä¸€çº§levelçš„subD
 					for(Edge e: task.getInEdges()){
 						Task parent = e.getSource();
 						double startTime = e.getDataSize()/VM.NETWORK_SPEED;
@@ -385,13 +385,13 @@ public class ClassifySchedule implements Scheduler {
 			fbsSubDlevel.set(i, initialSubDlevel.get(i)-initialSubDlevel.get(i+1));
 		}
 		
-		//¹«Ê½14
+		//å…¬å¼14
 		alphaDeadline = (wf.getDeadline()-initialSubDlevel.get(1))/initialSubDlevel.get(1);
 		
-		//¹«Ê½15 ¼ÆËãÃ¿Ò»²ãµÄsubD 
-		//ÂÛÎÄ¹«Ê½£¬ÎŞÀÛ¼Ó£¬ÊÇ´íµÄ£¬ÏÂÃæ²ÉÓÃµÄÊÇÀÛ¼ÓµÄ·½·¨½øĞĞ¾ÀÕı£¬»òĞíÒ²¿ÉÒÔÍ¨¹ı¸üĞÂEFTÀ´¾ÀÕı
-//		for(Map.Entry<Integer, List<Task>> entry : taskLevelSet.entrySet()){ //°´ÕÕlevel±éÀúËùÓĞÈÎÎñ
-//			double subDlevel = 0; //¸ù¾İ¹¤×÷Á÷deadline¼ÆËãµÄÃ¿²ãµÄÊµ¼ÊsubD
+		//å…¬å¼15 è®¡ç®—æ¯ä¸€å±‚çš„subD 
+		//è®ºæ–‡å…¬å¼ï¼Œæ— ç´¯åŠ ï¼Œæ˜¯é”™çš„ï¼Œä¸‹é¢é‡‡ç”¨çš„æ˜¯ç´¯åŠ çš„æ–¹æ³•è¿›è¡Œçº æ­£ï¼Œæˆ–è®¸ä¹Ÿå¯ä»¥é€šè¿‡æ›´æ–°EFTæ¥çº æ­£
+//		for(Map.Entry<Integer, List<Task>> entry : taskLevelSet.entrySet()){ //æŒ‰ç…§leveléå†æ‰€æœ‰ä»»åŠ¡
+//			double subDlevel = 0; //æ ¹æ®å·¥ä½œæµdeadlineè®¡ç®—çš„æ¯å±‚çš„å®é™…subD
 //			int level = entry.getKey().intValue();
 //			List<Task> taskSet = entry.getValue();
 //			subDlevel = this.initialSubDlevel.get(level) + this.alphaDeadline*this.fbsSubDlevel.get(level);
@@ -399,10 +399,10 @@ public class ClassifySchedule implements Scheduler {
 //				task.setSubD(subDlevel);
 //			}	
 //		}
-		//ÂÛÎÄ¹«Ê½£¬ÓĞÀÛ¼Ó
-		double sumFbsSubDlevel = 0; //Ã¿Ò»²ãlevel³¤¶ÈµÄÀÛ¼Ó
-		for(Map.Entry<Integer, List<Task>> entry : taskLevelSet.entrySet()){ //°´ÕÕlevel±éÀúËùÓĞÈÎÎñ
-			double subDlevel = 0; //¸ù¾İ¹¤×÷Á÷deadline¼ÆËãµÄÃ¿²ãµÄÊµ¼ÊsubD
+		//è®ºæ–‡å…¬å¼ï¼Œæœ‰ç´¯åŠ 
+		double sumFbsSubDlevel = 0; //æ¯ä¸€å±‚levelé•¿åº¦çš„ç´¯åŠ 
+		for(Map.Entry<Integer, List<Task>> entry : taskLevelSet.entrySet()){ //æŒ‰ç…§leveléå†æ‰€æœ‰ä»»åŠ¡
+			double subDlevel = 0; //æ ¹æ®å·¥ä½œæµdeadlineè®¡ç®—çš„æ¯å±‚çš„å®é™…subD
 			int level = entry.getKey().intValue();
 			List<Task> taskSet = entry.getValue();
 			sumFbsSubDlevel += fbsSubDlevel.get(level);

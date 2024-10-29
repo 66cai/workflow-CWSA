@@ -4,29 +4,29 @@ import java.util.*;
 import cloud.workflowScheduling.setting.*;
 
 
-public class Benchmarks { //Á½ÖÖÓÃµÄËùÎ½HEFT£¬¶¼Ã»ÓĞ²å¿Õ
+public class Benchmarks { //ä¸¤ç§ç”¨çš„æ‰€è°“HEFTï¼Œéƒ½æ²¡æœ‰æ’ç©º
 	private Solution cheapSchedule, fastSchedule;
-	private Solution minCostSchedule; //ÎÄÏ×8µÄ¹«Ê½(5)(6)µÄµ÷¶È½á¹û
+	private Solution minCostSchedule; //æ–‡çŒ®8çš„å…¬å¼(5)(6)çš„è°ƒåº¦ç»“æœ
 
 	public Benchmarks(Workflow wf){
-		fastSchedule =  bLevelEST(wf);		//VM¹Ì¶¨ÎªfastestÇÒ¿ÉÒÔÈÎÒâ¶à¸ö£¬ÇóÈ¡½üËÆµÄ×î¿ìµ÷¶È·½°¸
-		cheapSchedule = slowestVMEST(wf);	//uses one slowest VM£¬Çó×îÂıµÄµ÷¶È·½°¸	
+		fastSchedule =  bLevelEST(wf);		//VMå›ºå®šä¸ºfastestä¸”å¯ä»¥ä»»æ„å¤šä¸ªï¼Œæ±‚å–è¿‘ä¼¼çš„æœ€å¿«è°ƒåº¦æ–¹æ¡ˆ
+		cheapSchedule = slowestVMEST(wf);	//uses one slowest VMï¼Œæ±‚æœ€æ…¢çš„è°ƒåº¦æ–¹æ¡ˆ	
 		
 		minCostSchedule = minCostOfSingleTask(wf);
 	}
 	
 	// in one slowest VM, use EST to allocate tasks
-	private Solution slowestVMEST(Workflow wf){ //HEFTËã·¨£¬ÓÃµÄÅÅĞòÊÇL-ACOÎÄÖĞµÄblevel
+	private Solution slowestVMEST(Workflow wf){ //HEFTç®—æ³•ï¼Œç”¨çš„æ’åºæ˜¯L-ACOæ–‡ä¸­çš„blevel
 		Solution solution = new Solution();
 		
-		//Ô­ÏÈµÄ
+		//åŸå…ˆçš„
 		VM vm = new VM(VM.SLOWEST);
 		for(Task task : wf){
 			double EST = solution.calcEST(task, vm);
 			solution.addTaskToVM(vm, task, EST, true);
 		}
 		
-//		//ĞŞ¸ÄµÄ
+//		//ä¿®æ”¹çš„
 //		for(Task task : wf){				//select VM based on EST
 //			double minEST = Double.MAX_VALUE;
 //			VM selectedVM = null;
@@ -37,7 +37,7 @@ public class Benchmarks { //Á½ÖÖÓÃµÄËùÎ½HEFT£¬¶¼Ã»ÓĞ²å¿Õ
 //					selectedVM = vm;
 //				}
 //			}
-//			//ÔÚÔÆÖĞÊ¹ÓÃĞèÒªÀ©Õ¹µÄµã£ººÎÊ±¼ÓÈëĞÂVM
+//			//åœ¨äº‘ä¸­ä½¿ç”¨éœ€è¦æ‰©å±•çš„ç‚¹ï¼šä½•æ—¶åŠ å…¥æ–°VM
 //			double EST = solution.calcEST(task, null);	//whether minEST can be shorten if a new vm is added
 //			if(EST < minEST){
 //				minEST = EST;
@@ -50,11 +50,11 @@ public class Benchmarks { //Á½ÖÖÓÃµÄËùÎ½HEFT£¬¶¼Ã»ÓĞ²å¿Õ
 	}
 	
 	//list scheduling based on bLevel and EST; a kind of HEFT 
-	//¶¯Ì¬Ôö¼ÓĞéÄâ»úµÄ¸öÊı£¬¿ªÊ¼Ã»ÓĞÈ·¶¨VMµÄ¸öÊı¡£Èç¹ûÔö¼ÓVM£¬EST±äĞ¡£¬ÔòÔö¼ÓĞÂµÄVM
-	private Solution bLevelEST(Workflow wf) {//HEFTËã·¨£¬ÓÃµÄÅÅĞòÊÇL-ACOÎÄÖĞµÄblevel
+	//åŠ¨æ€å¢åŠ è™šæ‹Ÿæœºçš„ä¸ªæ•°ï¼Œå¼€å§‹æ²¡æœ‰ç¡®å®šVMçš„ä¸ªæ•°ã€‚å¦‚æœå¢åŠ VMï¼ŒESTå˜å°ï¼Œåˆ™å¢åŠ æ–°çš„VM
+	private Solution bLevelEST(Workflow wf) {//HEFTç®—æ³•ï¼Œç”¨çš„æ’åºæ˜¯L-ACOæ–‡ä¸­çš„blevel
 		Solution solution = new Solution();
 		
-		//ÅÅĞò¿ÉÒÔ²»Òª£¬workflowÖĞÅÅĞòÁË
+		//æ’åºå¯ä»¥ä¸è¦ï¼Œworkflowä¸­æ’åºäº†
 //		List<Task> tasks = new ArrayList<Task>(wf);
 //		Collections.sort(tasks, new Task.BLevelComparator()); 	//sort based on bLevel
 //		Collections.reverse(tasks); 	// larger first	
@@ -69,7 +69,7 @@ public class Benchmarks { //Á½ÖÖÓÃµÄËùÎ½HEFT£¬¶¼Ã»ÓĞ²å¿Õ
 	}
 	
 	/**
-	 * ÎÄÏ×8ÖĞµÄ¹«Ê½(5)(6), Ã¿¸öÈÎÎñ·ÖÅäµ½cost×îĞ¡µÄ»úÆ÷ÉÏ£¬Ã»ÓĞ¿¼ÂÇ´«ÊäÊ±¼ä
+	 * æ–‡çŒ®8ä¸­çš„å…¬å¼(5)(6), æ¯ä¸ªä»»åŠ¡åˆ†é…åˆ°costæœ€å°çš„æœºå™¨ä¸Šï¼Œæ²¡æœ‰è€ƒè™‘ä¼ è¾“æ—¶é—´
 	 * @param wf
 	 * @return
 	 */

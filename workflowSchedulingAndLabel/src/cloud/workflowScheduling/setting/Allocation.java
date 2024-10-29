@@ -6,11 +6,11 @@ public class Allocation implements Serializable{
 
 	private Task task;
 	private VM vm;
-	private double startTime; //ylw190426 ÈÎÎñµÄ¿ªÊ¼Ê±¼äºÍ½áÊøÊ±¼ä
+	private double startTime; //ylw190426 ä»»åŠ¡çš„å¼€å§‹æ—¶é—´å’Œç»“æŸæ—¶é—´
 	private double finishTime;
 	
 	public Allocation() {}
-	public Allocation(VM vm, Task task, double startTime, double finishTime) { //ÓÃÓÚÉî¸´ÖÆ
+	public Allocation(VM vm, Task task, double startTime, double finishTime) { //ç”¨äºæ·±å¤åˆ¶
 		this.vm = vm;
 		this.task = task;
 		this.startTime = startTime;

@@ -23,10 +23,10 @@ public class Solution extends LinkedHashMap<VM, LinkedList<Allocation>> implemen
 		super();
 		VM.resetInternalId();
 	}
-	public Solution(int i) { //¸Ã¹¹Ôìº¯ÊıÖ»ÎªÁË²»³õÊ¼»¯VMµÄidÎª0
+	public Solution(int i) { //è¯¥æ„é€ å‡½æ•°åªä¸ºäº†ä¸åˆå§‹åŒ–VMçš„idä¸º0
 		super();
 	}
-	//vm task ²»ĞèÒªÉî¸´ÖÆ
+	//vm task ä¸éœ€è¦æ·±å¤åˆ¶
 	public static Solution deepcopy(Solution s1) {
 //		VM v1 =new VM(0), v2= new VM(1); Task t1 = new Task("liwen",100);
 //		Allocation newAllo1 = new Allocation(v1, t1, 0, 1);
@@ -95,7 +95,7 @@ public class Solution extends LinkedHashMap<VM, LinkedList<Allocation>> implemen
 	
 
 	
-	public void updateVM(VM vm){		//ÕâÀï½ö½øĞĞ¸ÃVMÉÏµÄ¸üĞÂ£¬ÆäËûµÄvmµÄ¾Í²»ÔÙÉæ¼°ÁË
+	public void updateVM(VM vm){		//è¿™é‡Œä»…è¿›è¡Œè¯¥VMä¸Šçš„æ›´æ–°ï¼Œå…¶ä»–çš„vmçš„å°±ä¸å†æ¶‰åŠäº†
 		vm.setType(vm.getType()+1);
 		
 		LinkedList<Allocation> list = this.get(vm);
@@ -107,9 +107,9 @@ public class Solution extends LinkedHashMap<VM, LinkedList<Allocation>> implemen
 		}
 	}
 	
-	public VM updateVMForPCPandPSO2_1(VM vm){		//ÕâÀï½ö½øĞĞ¸ÃVMÉÏµÄ¸üĞÂ£¬ÆäËûµÄvmµÄ¾Í²»ÔÙÉæ¼°ÁË
+	public VM updateVMForPCPandPSO2_1(VM vm){		//è¿™é‡Œä»…è¿›è¡Œè¯¥VMä¸Šçš„æ›´æ–°ï¼Œå…¶ä»–çš„vmçš„å°±ä¸å†æ¶‰åŠäº†
 		LinkedList<Allocation> list = this.get(vm);
-		this.remove(vm); //ÒÆ³ıÓ³Éä, list»¹ÔÚ
+		this.remove(vm); //ç§»é™¤æ˜ å°„, listè¿˜åœ¨
 		
 		int type = vm.getType() + 1;
 		VM newVm = new VM(type);
@@ -134,7 +134,7 @@ public class Solution extends LinkedHashMap<VM, LinkedList<Allocation>> implemen
 			Allocation alloc = revMapping.get(parent);
 			VM parentVM = alloc.getVM();
 			double arrivalTime = alloc.getFinishTime();
-			//×îÍí¸¸ÈÎÎñµÄ´«ÊäÊ±¼ä
+			//æœ€æ™šçˆ¶ä»»åŠ¡çš„ä¼ è¾“æ—¶é—´
 			if( parentVM != vm )
 				arrivalTime += inEdge.getDataSize() / VM.NETWORK_SPEED;
 			EST = Math.max(EST, arrivalTime);
@@ -155,7 +155,7 @@ public class Solution extends LinkedHashMap<VM, LinkedList<Allocation>> implemen
 			Allocation alloc = revMapping.get(parent);
 			VM parentVM = alloc.getVM();
 			double arrivalTime = alloc.getFinishTime();
-			//×îÍí¸¸ÈÎÎñµÄ´«ÊäÊ±¼ä
+			//æœ€æ™šçˆ¶ä»»åŠ¡çš„ä¼ è¾“æ—¶é—´
 			if( parentVM != vm )
 				arrivalTime += inEdge.getDataSize() / VM.NETWORK_SPEED;
 			EST = Math.max(EST, arrivalTime);
@@ -169,7 +169,7 @@ public class Solution extends LinkedHashMap<VM, LinkedList<Allocation>> implemen
 			Allocation alloc = revMapping.get(parent);
 //			VM parentVM = alloc.getVM();
 			double arrivalTime = alloc.getFinishTime();
-			//×îÍí¸¸ÈÎÎñµÄ´«ÊäÊ±¼ä
+			//æœ€æ™šçˆ¶ä»»åŠ¡çš„ä¼ è¾“æ—¶é—´
 			arrivalTime += inEdge.getDataSize() / VM.NETWORK_SPEED;
 			EST = Math.max(EST, arrivalTime);
 		}
@@ -187,7 +187,7 @@ public class Solution extends LinkedHashMap<VM, LinkedList<Allocation>> implemen
 //				System.out.println("null");
 //			VM parentVM = alloc.getVM();
 //			double arrivalTime = alloc.getFinishTime();
-//			//¼ÆËãµÄÊÇ²»ÔÚÍ¬Ò»×ÊÔ´ÉÏµÄËùÓĞ¸¸ÈÎÎñµÄ´«ÊäÊ±¼ä£¬²»ÊÇ×îÍí¸¸ÈÎÎñµÄ´«ÊäÊ±¼ä
+//			//è®¡ç®—çš„æ˜¯ä¸åœ¨åŒä¸€èµ„æºä¸Šçš„æ‰€æœ‰çˆ¶ä»»åŠ¡çš„ä¼ è¾“æ—¶é—´ï¼Œä¸æ˜¯æœ€æ™šçˆ¶ä»»åŠ¡çš„ä¼ è¾“æ—¶é—´
 //			if( parentVM != vm )
 //				arrivalTime += inEdge.getDataSize() / VM.NETWORK_SPEED;
 //			EST = Math.max(EST, arrivalTime);
@@ -210,7 +210,7 @@ public class Solution extends LinkedHashMap<VM, LinkedList<Allocation>> implemen
 	public double calcVMCost(VM vm){
 		return vm.getUnitCost() * Math.ceil((this.getVMLeaseEndTime(vm) - this.getVMLeaseStartTime(vm))/VM.INTERVAL);
 		
-//		//ÈİÆ÷¼Æ¼ÛÄ£ĞÍ
+//		//å®¹å™¨è®¡ä»·æ¨¡å‹
 //		double leaseTime = this.getVMLeaseEndTime(vm) - this.getVMLeaseStartTime(vm);
 //		long chargingTime = (long) leaseTime;
 //		if((leaseTime- chargingTime) > 0.5)
@@ -236,7 +236,7 @@ public class Solution extends LinkedHashMap<VM, LinkedList<Allocation>> implemen
 		double cost1 = this.calcCost();
 		double cost2 = s.calcCost();
 		
-//		//ACS_8Ô¼ÊøµÄ´¦Àí
+//		//ACS_8çº¦æŸçš„å¤„ç†
 //		if(makespan1>epsilonDeadline)
 //			cost1 = 1000000;
 //		if(makespan2>epsilonDeadline)
@@ -246,9 +246,9 @@ public class Solution extends LinkedHashMap<VM, LinkedList<Allocation>> implemen
 			return cost1<cost2;
 		}else if(makespan1 > epsilonDeadline && makespan2 > epsilonDeadline ){//both does not satisfy
 			return makespan1<makespan2;
-		}else if(makespan1 <= epsilonDeadline && makespan2 > epsilonDeadline){ //this satisfy£¬s doesn't
+		}else if(makespan1 <= epsilonDeadline && makespan2 > epsilonDeadline){ //this satisfyï¼Œs doesn't
 			return true;
-		}else if(makespan1 > epsilonDeadline && makespan2 <= epsilonDeadline) //this don't£¬s satisfies
+		}else if(makespan1 > epsilonDeadline && makespan2 <= epsilonDeadline) //this don'tï¼Œs satisfies
 			return false;
 		
 		return true;
@@ -264,7 +264,7 @@ public class Solution extends LinkedHashMap<VM, LinkedList<Allocation>> implemen
 			return false;
 		}
 		
-//		Collections.sort(list);			//°Ñ¸Ãsolutionµ±ÖĞµÄtaskÒÔÊ±¼äË³ĞòÅÅÁĞ£¬²¢¼ì²âÊÇ·ñÊÇÍØÆËÅÅĞò
+//		Collections.sort(list);			//æŠŠè¯¥solutionå½“ä¸­çš„taskä»¥æ—¶é—´é¡ºåºæ’åˆ—ï¼Œå¹¶æ£€æµ‹æ˜¯å¦æ˜¯æ‹“æ‰‘æ’åº
 		for(Allocation alloc : list){
 			Task task = alloc.getTask();	// check each task and its children
 			for(Edge e : task.getOutEdges()){
@@ -286,7 +286,7 @@ public class Solution extends LinkedHashMap<VM, LinkedList<Allocation>> implemen
 	}
 	
 	//check whether there is time conflict in this schedule solution
-	//+·µ»ØÎ¥·´Ô¼ÊøµÄ¸¸×ÓÈÎÎñId
+	//+è¿”å›è¿åçº¦æŸçš„çˆ¶å­ä»»åŠ¡Id
 	public List<Integer> validateId(Workflow wf){
 		List<Allocation> list = new ArrayList<Allocation>(revMapping.values());
 		
@@ -305,11 +305,11 @@ public class Solution extends LinkedHashMap<VM, LinkedList<Allocation>> implemen
 //		}
 		if(set.size() != wf.size())	{	//check # of tasks
 			result.add(new Integer(0));
-//			System.out.println("!!!ÈÎÎñ¸öÊı²»¶Ô");
+//			System.out.println("!!!ä»»åŠ¡ä¸ªæ•°ä¸å¯¹");
 			return result;
 		}
 		
-//		Collections.sort(list);			//°Ñ¸Ãsolutionµ±ÖĞµÄtaskÒÔÊ±¼äË³ĞòÅÅÁĞ£¬²¢¼ì²âÊÇ·ñÊÇÍØÆËÅÅĞò
+//		Collections.sort(list);			//æŠŠè¯¥solutionå½“ä¸­çš„taskä»¥æ—¶é—´é¡ºåºæ’åˆ—ï¼Œå¹¶æ£€æµ‹æ˜¯å¦æ˜¯æ‹“æ‰‘æ’åº
 		for(Allocation alloc : list){
 			Task task = alloc.getTask();	// check each task and its children
 			for(Edge e : task.getOutEdges()){
@@ -388,7 +388,7 @@ public class Solution extends LinkedHashMap<VM, LinkedList<Allocation>> implemen
 	//----------------------------------------override-------------------------------------------
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("required cost£º" + this.calcCost() + "\t required time£º" + this.calcMakespan()+"\r\n");
+		sb.append("required costï¼š" + this.calcCost() + "\t required timeï¼š" + this.calcMakespan()+"\r\n");
 //		for(VM vm : this.keySet()){
 //			sb.append(vm.toString() + this.get(vm).toString()+"\r\n");
 //		}

@@ -5,12 +5,12 @@ import java.io.Serializable;
 // virtual machine, i.e., cloud service resource
 public class VM implements Serializable{
 
-	public static final double LAUNCH_TIME = 0; //Amazon VMÆô¶¯Ê±¼ä97s
-	public static final long NETWORK_SPEED = 20 * 1024*1024; //´û¿î20M
+	public static final double LAUNCH_TIME = 0; //Amazon VMå¯åŠ¨æ—¶é—´97s
+	public static final long NETWORK_SPEED = 20 * 1024*1024; //è´·æ¬¾20M
 	
-	//4¡¢ÎÄÕÂÖĞ³£ÓÃµÄ, MinimizingÎÄÕÂ, in the USA East region[US East(N. Virginia)]  General Purpose - Previous Generation
+	//4ã€æ–‡ç« ä¸­å¸¸ç”¨çš„, Minimizingæ–‡ç« , in the USA East region[US East(N. Virginia)]  General Purpose - Previous Generation
 	//https://aws.amazon.com/ec2/previous-generation/?nc1=h_ls 
-	//deadlineFactor 1.5, 2, 3, 4, ..., 9, 10   mpcÓÃµÄÕâ¸ö
+	//deadlineFactor 1.5, 2, 3, 4, ..., 9, 10   mpcç”¨çš„è¿™ä¸ª
 	public static final int TYPE_NO = 8;
 ////									m1.small, m1.medium, m3.medium, m1.large, m3.large, m1.xlarge, m3.xlarge, m3.2xlarge		
 	public static final double[] SPEEDS = {1, 2, 3, 4, 6.5, 8, 13, 26,}; //ECU
@@ -20,7 +20,7 @@ public class VM implements Serializable{
 	public static final int FASTEST = 7;
 	public static final int SLOWEST = 0;
 	
-	//1¡¢L-ACOÖĞµÄ   subDMethodsÓÃµÄÕâ¸ö
+	//1ã€L-ACOä¸­çš„   subDMethodsç”¨çš„è¿™ä¸ª
 //	public static final int TYPE_NO = 9;
 //	public static final double[] SPEEDS = {1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5};
 //	public static final double[] UNIT_COSTS = {0.12, 0.195, 0.28, 0.375, 0.48, 0.595, 0.72, 0.855, 1};

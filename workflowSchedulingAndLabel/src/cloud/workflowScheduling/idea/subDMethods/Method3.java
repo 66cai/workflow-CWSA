@@ -11,7 +11,7 @@ import cloud.workflowScheduling.setting.*;
 
 public class Method3 implements Scheduler {
 	
-	private int workflowDepth; //¼´Èë¿ÚÈÎÎñµÄdepth
+	private int workflowDepth; //å³å…¥å£ä»»åŠ¡çš„depth
 	private double alphaDeadline; 
 	private double deadlineFactor;
 	private Map<Integer, List<Task>> taskLevelSet;
@@ -22,8 +22,8 @@ public class Method3 implements Scheduler {
 	}
 
 	public Solution schedule(Workflow wf) {
-		//µ÷¶ÈÇ°£¬ÏÈ³õÊ¼»¯³ÉÔ±±äÁ¿
-		workflowDepth = 0; //¼´Èë¿ÚÈÎÎñµÄdepth
+		//è°ƒåº¦å‰ï¼Œå…ˆåˆå§‹åŒ–æˆå‘˜å˜é‡
+		workflowDepth = 0; //å³å…¥å£ä»»åŠ¡çš„depth
 		alphaDeadline = 0.0; 
 		deadlineFactor = 0.0;
 		taskLevelSet = new LinkedHashMap<Integer, List<Task>>();
@@ -38,7 +38,7 @@ public class Method3 implements Scheduler {
 		
 		Task entryTask = wf.get(0);
 		
-		//¼ÆËãÈÎÎñdepth, ´Ó³ö¿ÚÈÎÎñ¿ªÊ¼
+		//è®¡ç®—ä»»åŠ¡depth, ä»å‡ºå£ä»»åŠ¡å¼€å§‹
 		List<Task> exits = new ArrayList<Task>();
 		for(Task t : wf) {
 			if(t.getOutEdges().isEmpty())
@@ -50,7 +50,7 @@ public class Method3 implements Scheduler {
         }	
 		this.workflowDepth = entryTask.getDepth();
 		
-		//¼ÆËãTLS
+		//è®¡ç®—TLS
 		for(int i = this.workflowDepth; i > 0; i--){	
 			taskLevelSet.put(Integer.valueOf(i), new ArrayList<Task>());
 		}
@@ -60,7 +60,7 @@ public class Method3 implements Scheduler {
 			taskLevelSet.get(Integer.valueOf(depth)).add(task);
 		}
 		
-		//³õÊ¼»¯Ã¿²ãlevelµÄsubD²¢¼ÆËãEFT£¨ÎÄÏ×ÖĞµÄ¼ÆËãEFT¿¼ÂÇÁËlevelµÄsubD£©£¬¹«Ê½13¡¢14
+		//åˆå§‹åŒ–æ¯å±‚levelçš„subDå¹¶è®¡ç®—EFTï¼ˆæ–‡çŒ®ä¸­çš„è®¡ç®—EFTè€ƒè™‘äº†levelçš„subDï¼‰ï¼Œå…¬å¼13ã€14
 		for(int i = 0; i < this.workflowDepth+1; i++){	
 			initialSubDlevel.add(-1.0);
 			this.fbsSubDlevel.add(-1.0);
@@ -69,14 +69,14 @@ public class Method3 implements Scheduler {
 		entryTask.setEST(0);
 		entryTask.setEFT(0);
 		initialSubDlevel.set(entryTask.getDepth(), 0.0); 
-		for(Map.Entry<Integer, List<Task>> entry : taskLevelSet.entrySet()){ //°´ÕÕlevel±éÀúËùÓĞÈÎÎñ
+		for(Map.Entry<Integer, List<Task>> entry : taskLevelSet.entrySet()){ //æŒ‰ç…§leveléå†æ‰€æœ‰ä»»åŠ¡
 			if(entry.getKey().equals(this.workflowDepth))
 				continue;
-			else { //±éÀúµ±Ç°levelÖĞËùÓĞÈÎÎñ£¬¼ÆËãÆäEFT, ²¢¼ÆËãµ±Ç°levelµÄsubD
+			else { //éå†å½“å‰levelä¸­æ‰€æœ‰ä»»åŠ¡ï¼Œè®¡ç®—å…¶EFT, å¹¶è®¡ç®—å½“å‰levelçš„subD
 				double subD = 0.0;
 				List<Task> taskSet = entry.getValue();
 				for(Task task : taskSet) {
-					double EST = this.initialSubDlevel.get(task.getDepth()+1); //³õÊ¼»¯ÈÎÎñËùÔÚlevelµÄÉÏÒ»¼¶levelµÄsubD
+					double EST = this.initialSubDlevel.get(task.getDepth()+1); //åˆå§‹åŒ–ä»»åŠ¡æ‰€åœ¨levelçš„ä¸Šä¸€çº§levelçš„subD
 					for(Edge e: task.getInEdges()){
 						Task parent = e.getSource();
 						double startTime = e.getDataSize()/VM.NETWORK_SPEED;
@@ -92,7 +92,7 @@ public class Method3 implements Scheduler {
 			}
 		}
 		
-		//¼ÆËã¹«Ê½15
+		//è®¡ç®—å…¬å¼15
 		this.fbsSubDlevel.set(this.workflowDepth, 0.0);
 		this.alphaDeadline = this.fbsSubDlevel.get(workflowDepth)*this.taskLevelSet.get(Integer.valueOf(workflowDepth)).size();
 		for(int i = this.workflowDepth-1; i > 0; i--){
@@ -100,13 +100,13 @@ public class Method3 implements Scheduler {
 			this.alphaDeadline += this.fbsSubDlevel.get(i)*this.taskLevelSet.get(Integer.valueOf(i)).size();
 		}
 		
-		//¹«Ê½16
+		//å…¬å¼16
 		this.deadlineFactor = (wf.getDeadline()-this.initialSubDlevel.get(1))/this.alphaDeadline;
 		
-		//¹«Ê½17 ¼ÆËãÃ¿Ò»²ãµÄsubD 
-		//ÂÛÎÄ¹«Ê½£¬ÎŞÀÛ¼Ó£¬ÊÇ´íµÄ£¬ÏÂÃæ²ÉÓÃµÄÊÇÀÛ¼ÓµÄ·½·¨½øĞĞ¾ÀÕı£¬»òĞíÒ²¿ÉÒÔÍ¨¹ı¸üĞÂEFTÀ´¾ÀÕı
-//		for(Map.Entry<Integer, List<Task>> entry : taskLevelSet.entrySet()){ //°´ÕÕlevel±éÀúËùÓĞÈÎÎñ
-//			double subDlevel = 0; //¸ù¾İ¹¤×÷Á÷deadline¼ÆËãµÄÃ¿²ãµÄÊµ¼ÊsubD
+		//å…¬å¼17 è®¡ç®—æ¯ä¸€å±‚çš„subD 
+		//è®ºæ–‡å…¬å¼ï¼Œæ— ç´¯åŠ ï¼Œæ˜¯é”™çš„ï¼Œä¸‹é¢é‡‡ç”¨çš„æ˜¯ç´¯åŠ çš„æ–¹æ³•è¿›è¡Œçº æ­£ï¼Œæˆ–è®¸ä¹Ÿå¯ä»¥é€šè¿‡æ›´æ–°EFTæ¥çº æ­£
+//		for(Map.Entry<Integer, List<Task>> entry : taskLevelSet.entrySet()){ //æŒ‰ç…§leveléå†æ‰€æœ‰ä»»åŠ¡
+//			double subDlevel = 0; //æ ¹æ®å·¥ä½œæµdeadlineè®¡ç®—çš„æ¯å±‚çš„å®é™…subD
 //			int level = entry.getKey().intValue();
 //			List<Task> taskSet = entry.getValue();
 //			subDlevel = this.initialSubDlevel.get(level) + 
@@ -115,10 +115,10 @@ public class Method3 implements Scheduler {
 //				task.setSubD(subDlevel);
 //			}	
 //		}
-		//ÂÛÎÄ¹«Ê½£¬ÓĞÀÛ¼Ó
-		double sumFbsSubDlevel = 0; //Ã¿Ò»²ãlevel³¤¶ÈµÄÀÛ¼Ó
-		for(Map.Entry<Integer, List<Task>> entry : taskLevelSet.entrySet()){ //°´ÕÕlevel±éÀúËùÓĞÈÎÎñ
-			double subDlevel = 0; //¸ù¾İ¹¤×÷Á÷deadline¼ÆËãµÄÃ¿²ãµÄÊµ¼ÊsubD
+		//è®ºæ–‡å…¬å¼ï¼Œæœ‰ç´¯åŠ 
+		double sumFbsSubDlevel = 0; //æ¯ä¸€å±‚levelé•¿åº¦çš„ç´¯åŠ 
+		for(Map.Entry<Integer, List<Task>> entry : taskLevelSet.entrySet()){ //æŒ‰ç…§leveléå†æ‰€æœ‰ä»»åŠ¡
+			double subDlevel = 0; //æ ¹æ®å·¥ä½œæµdeadlineè®¡ç®—çš„æ¯å±‚çš„å®é™…subD
 			int level = entry.getKey().intValue();
 			List<Task> taskSet = entry.getValue();
 			sumFbsSubDlevel += this.fbsSubDlevel.get(level)*this.taskLevelSet.get(Integer.valueOf(level)).size();
@@ -159,13 +159,13 @@ public class Method3 implements Scheduler {
 //			}
 			Allocation alloc = getMinCostVM(task, solution,proSubDeadline, i);
 
-			//µ±CPLength>deadlineÊ±£¬×ÓÆÚÏŞµÄ»®·Ö¿ÉÄÜµ¼ÖÂEFT>subDeadline£»ËùÒÔ±ØĞë¿¼ÂÇ×ÓÆÚÏŞ²»Âú×ãµÄÇé¿ö£º´ËÊ±Ñ¡Ôñminimal EFTµÄVM
+			//å½“CPLength>deadlineæ—¶ï¼Œå­æœŸé™çš„åˆ’åˆ†å¯èƒ½å¯¼è‡´EFT>subDeadlineï¼›æ‰€ä»¥å¿…é¡»è€ƒè™‘å­æœŸé™ä¸æ»¡è¶³çš„æƒ…å†µï¼šæ­¤æ—¶é€‰æ‹©minimal EFTçš„VM
 			if(alloc == null){			//select a vm which allows EFT
 				alloc = getMinEFTVM(task, solution, proSubDeadline, i);
 				
 //				VM vm = alloc.getVM();
 //				while(alloc.getFinishTime() > proSubDeadline + Evaluate.E && vm.getType() < VM.FASTEST){
-//					solution.updateVM(vm);			//upgradeÈô½øĞĞÕû¸ö½âµÄ¸üĞÂ£»¸´ÔÓ¶È½«Ôö³¤Ì«¶à¡£
+//					solution.updateVM(vm);			//upgradeè‹¥è¿›è¡Œæ•´ä¸ªè§£çš„æ›´æ–°ï¼›å¤æ‚åº¦å°†å¢é•¿å¤ªå¤šã€‚
 //					alloc.setStartTime(solution.calcEST(task, vm));
 //					alloc.setFinishTime(solution.calcEST(task, vm) + task.getTaskSize()/vm.getSpeed());
 //				}

@@ -54,13 +54,13 @@ public class Method1uRank implements Scheduler {
 //			}
 			Allocation alloc = getMinCostVM(task, solution,proSubDeadline, i);
 
-			//µ±CPLength>deadlineÊ±£¬×ÓÆÚÏÞµÄ»®·Ö¿ÉÄÜµ¼ÖÂEFT>subDeadline£»ËùÒÔ±ØÐë¿¼ÂÇ×ÓÆÚÏÞ²»Âú×ãµÄÇé¿ö£º´ËÊ±Ñ¡Ôñminimal EFTµÄVM
+			//å½“CPLength>deadlineæ—¶ï¼Œå­æœŸé™çš„åˆ’åˆ†å¯èƒ½å¯¼è‡´EFT>subDeadlineï¼›æ‰€ä»¥å¿…é¡»è€ƒè™‘å­æœŸé™ä¸æ»¡è¶³çš„æƒ…å†µï¼šæ­¤æ—¶é€‰æ‹©minimal EFTçš„VM
 			if(alloc == null){			//select a vm which allows EFT
 				alloc = getMinEFTVM(task, solution, proSubDeadline, i);
 				
 //				VM vm = alloc.getVM();
 //				while(alloc.getFinishTime() > proSubDeadline + Evaluate.E && vm.getType() < VM.FASTEST){
-//					solution.updateVM(vm);			//upgradeÈô½øÐÐÕû¸ö½âµÄ¸üÐÂ£»¸´ÔÓ¶È½«Ôö³¤Ì«¶à¡£
+//					solution.updateVM(vm);			//upgradeè‹¥è¿›è¡Œæ•´ä¸ªè§£çš„æ›´æ–°ï¼›å¤æ‚åº¦å°†å¢žé•¿å¤ªå¤šã€‚
 //					alloc.setStartTime(solution.calcEST(task, vm));
 //					alloc.setFinishTime(solution.calcEST(task, vm) + task.getTaskSize()/vm.getSpeed());
 //				}

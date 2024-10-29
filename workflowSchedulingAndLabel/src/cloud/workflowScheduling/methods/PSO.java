@@ -23,7 +23,7 @@ public class PSO implements Scheduler {
 	public Solution schedule(Workflow wf) {
 		this.wf = wf;
 		
-//		//¹¤×÷Á÷ÅÅĞòÓÃpUpwardRank
+//		//å·¥ä½œæµæ’åºç”¨pUpwardRank
 //		this.wf.calcPURank(1.5);
 //		Collections.sort(this.wf, new Task.PURankComparator()); 	
 //		Collections.reverse(this.wf);	//sort based on pURank, larger first
@@ -48,18 +48,18 @@ public class PSO implements Scheduler {
 			if (globalBestSol == null || particles[i].sol.isBetterThan(globalBestSol, wf.getDeadline())) {
 				for (int j = 0; j < dimension; j++)
 					globalBestPos[j] = particles[i].position[j];
-				globalBestSol= particles[i].sol;	// ÕâÀï²»ĞèÒªclone£¬ÒòÎªparticleµÄsolÃ¿´Îµü´úÊ±¶¼»áÖØĞÂnewµÄ
+				globalBestSol= particles[i].sol;	// è¿™é‡Œä¸éœ€è¦cloneï¼Œå› ä¸ºparticleçš„solæ¯æ¬¡è¿­ä»£æ—¶éƒ½ä¼šé‡æ–°newçš„
 			}
 		}
 //		System.out.println("the best initial solution:"+globalBestSol.calcCost()+";\t"+globalBestSol.calcMakespan());
 		
 		for (int iteIndex = 0; iteIndex < NO_OF_ITE; iteIndex++) {
-//			W = (double) (1.0 - iteIndex * 0.6 / 499);	//¹ßĞÔµİ¼õ£¬±Èw = 1Ğ§¹ûÒªºÃÒ»Ğ©¡£
+//			W = (double) (1.0 - iteIndex * 0.6 / 499);	//æƒ¯æ€§é€’å‡ï¼Œæ¯”w = 1æ•ˆæœè¦å¥½ä¸€äº›ã€‚
 			for (int i = 0; i < POPSIZE; i++) {
 				for (int j = 0; j < dimension; j++) {
 					particles[i].speed[j] = W * particles[i].speed[j]
 					        + C1 * rnd.nextDouble() * (particles[i].bestPos[j] - particles[i].position[j])
-							+ C2 * rnd.nextDouble() * (globalBestPos[j] - particles[i].position[j]);  //È«¾Ö×îºÃÎ»ÖÃ×÷ÎªÁÚ¾Ó
+							+ C2 * rnd.nextDouble() * (globalBestPos[j] - particles[i].position[j]);  //å…¨å±€æœ€å¥½ä½ç½®ä½œä¸ºé‚»å±…
 					particles[i].speed[j] = Math.min(particles[i].speed[j], vMax);
 					
 					particles[i].position[j] = particles[i].position[j] + particles[i].speed[j];
@@ -73,11 +73,11 @@ public class PSO implements Scheduler {
 					for (int j = 0; j < dimension; j++)
 						globalBestPos[j] = particles[i].position[j];
 					globalBestSol= particles[i].sol;
-//					System.out.printf("Iteration index£º%3d\t%5.2f\t%5.2f\n",iteIndex,
+//					System.out.printf("Iteration indexï¼š%3d\t%5.2f\t%5.2f\n",iteIndex,
 //							globalBestSol.calcCost(),	globalBestSol.calcMakespan());
 				}
 			}
-//			System.out.printf("Iteration index£º%3d\t%5.2f\t%5.2f\n",iteIndex,
+//			System.out.printf("Iteration indexï¼š%3d\t%5.2f\t%5.2f\n",iteIndex,
 //					globalBestSol.calcCost(),	globalBestSol.calcMakespan());
 		}
 //		System.out.println("Globle best is :" + globalBestSol.calcCost()+";\t"+globalBestSol.calcMakespan());
@@ -103,7 +103,7 @@ public class PSO implements Scheduler {
 			this.sol = new Solution();	
 			for(int i=0;i<position.length;i++){
 				Task task = wf.get(i);		// tasks in wf is a topological sort
-				int vmIndex = (int)(Math.floor(position[i])); //ÏòÏÂÈ¡Õû
+				int vmIndex = (int)(Math.floor(position[i])); //å‘ä¸‹å–æ•´
 				VM vm = vmPool[vmIndex];
 				double startTime = sol.calcEST(task, vm);
 				sol.addTaskToVM(vm, task, startTime, true);

@@ -21,7 +21,7 @@ import org.apache.poi.ss.usermodel.Row;
 
 /**
  * @Description: 
- * @author 21  * @date ´´½¨Ê±¼ä£º2016Äê12ÔÂ8ÈÕÏÂÎç2:38:47
+ * @author 21  * @date åˆ›å»ºæ—¶é—´ï¼š2016å¹´12æœˆ8æ—¥ä¸‹åˆ2:38:47
  * @version 1.0
  */
 public class ExcelManage {
@@ -29,33 +29,33 @@ public class ExcelManage {
 	HSSFWorkbook workbook = null; 
 	
 	/**
-	 * É¾³ı´æÔÚµÄExcel
-	 * @param filePath ±í¸ñµÄÎÄ¼şÂ·¾¶
+	 * åˆ é™¤å­˜åœ¨çš„Excel
+	 * @param filePath è¡¨æ ¼çš„æ–‡ä»¶è·¯å¾„
 	 * 190918YLW
 	 */
 	public static void clearExecl(String filePath) {
         ExcelManage em = new ExcelManage();  
-        //ÅĞ¶Ï¸ÃÃû³ÆµÄÎÄ¼şÊÇ·ñ´æÔÚ  
+        //åˆ¤æ–­è¯¥åç§°çš„æ–‡ä»¶æ˜¯å¦å­˜åœ¨  
         boolean fileFlag = em.fileExist(filePath);        
         if(fileFlag){
         	em.deleteExcel(filePath);
         }  
 	}
 	/**
-	 * ´´½¨¿ÕµÄExcelºÍ¹¤×÷±ísheet
-	 * @param filePath ExcelµÄÎÄ¼şÂ·¾¶
-	 * @param sheetName ¹¤×÷±íµÄÃû³Æ
+	 * åˆ›å»ºç©ºçš„Excelå’Œå·¥ä½œè¡¨sheet
+	 * @param filePath Excelçš„æ–‡ä»¶è·¯å¾„
+	 * @param sheetName å·¥ä½œè¡¨çš„åç§°
 	 */
 	public static ExcelManage initExecl(String filePath, String sheetName) {
         ExcelManage em = new ExcelManage();  
-        //ÅĞ¶Ï¸ÃÃû³ÆµÄÎÄ¼şÊÇ·ñ´æÔÚ  
+        //åˆ¤æ–­è¯¥åç§°çš„æ–‡ä»¶æ˜¯å¦å­˜åœ¨  
         boolean fileFlag = em.fileExist(filePath);        
         if(!fileFlag){
            em.createExcel(filePath,sheetName);
         }  
-        //ÅĞ¶Ï¸ÃÃû³ÆµÄSheetÊÇ·ñ´æÔÚ  
+        //åˆ¤æ–­è¯¥åç§°çš„Sheetæ˜¯å¦å­˜åœ¨  
         boolean sheetFlag = em.sheetExist(filePath,sheetName);
-        //Èç¹û¸ÃÃû³ÆµÄSheet²»´æÔÚ£¬ÔòĞÂ½¨Ò»¸öĞÂµÄSheet
+        //å¦‚æœè¯¥åç§°çš„Sheetä¸å­˜åœ¨ï¼Œåˆ™æ–°å»ºä¸€ä¸ªæ–°çš„Sheet
         if(!sheetFlag){
            try {
                em.createSheet(filePath,sheetName);
@@ -69,17 +69,17 @@ public class ExcelManage {
 	}
 	
 	/**
-	 * Ğ´ÈëExcel
+	 * å†™å…¥Excel
 	 * @param filePath
 	 * @param sheetName
-	 * @param constraintTitle Ô¼Êø³Ì¶È
-	 * @param methodTitle Ê¹ÓÃµÄ·½·¨Ãû³Æ
-	 * @param index µ±Ç°·½·¨µÄĞòºÅ
-	 * @param solution Ğ´ÈëµÄ½â
+	 * @param constraintTitle çº¦æŸç¨‹åº¦
+	 * @param methodTitle ä½¿ç”¨çš„æ–¹æ³•åç§°
+	 * @param index å½“å‰æ–¹æ³•çš„åºå·
+	 * @param solution å†™å…¥çš„è§£
 	 */
     public void writeToExcel(String filePath, String sheetName, 
     		double constraintTitle, double deadline, String methodTitle, int index, Solution solution){  
-        //´´½¨workbook  
+        //åˆ›å»ºworkbook  
         File file = new File(filePath);  
         try {  
             workbook = new HSSFWorkbook(new FileInputStream(file));  
@@ -90,51 +90,51 @@ public class ExcelManage {
         }  
         FileOutputStream out = null;  
         HSSFSheet sheet = workbook.getSheet(sheetName);  
-        // »ñÈ¡±í¸ñµÄ×ÜĞĞÊı  
-        int rowCount = sheet.getLastRowNum() + 1; // ĞèÒª¼ÓÒ»  
+        // è·å–è¡¨æ ¼çš„æ€»è¡Œæ•°  
+        int rowCount = sheet.getLastRowNum() + 1; // éœ€è¦åŠ ä¸€  
         Row row;
         Cell cell;
         try {  
-        	if (index == 0) { //·½·¨ĞòºÅÎª0Ê±£¬Ğ´ÈëÔ¼ÊøtitleºÍdeadline
-        		row = sheet.createRow(rowCount + 1);     //×îĞÂÒªÌí¼ÓµÄÒ»ĞĞ
-        		cell = row.createCell(0); //Ìí¼ÓÒ»ÁĞ
-        		cell.setCellValue("Ô¼Êø³Ì¶È" + String.valueOf(constraintTitle) + " [Deadline=" + String.valueOf(deadline) + "]");
+        	if (index == 0) { //æ–¹æ³•åºå·ä¸º0æ—¶ï¼Œå†™å…¥çº¦æŸtitleå’Œdeadline
+        		row = sheet.createRow(rowCount + 1);     //æœ€æ–°è¦æ·»åŠ çš„ä¸€è¡Œ
+        		cell = row.createCell(0); //æ·»åŠ ä¸€åˆ—
+        		cell.setCellValue("çº¦æŸç¨‹åº¦" + String.valueOf(constraintTitle) + " [Deadline=" + String.valueOf(deadline) + "]");
         		
             	rowCount = sheet.getLastRowNum() + 1;
         	} 
         	
-        	//´òÓ¡µ±Ç°·½·¨ºÍµ±Ç°·½·¨ÇóµÃµÄcostºÍmakespan
-    		row = sheet.createRow(rowCount);     //×îĞÂÒªÌí¼ÓµÄÒ»ĞĞ
+        	//æ‰“å°å½“å‰æ–¹æ³•å’Œå½“å‰æ–¹æ³•æ±‚å¾—çš„costå’Œmakespan
+    		row = sheet.createRow(rowCount);     //æœ€æ–°è¦æ·»åŠ çš„ä¸€è¡Œ
     		cell = row.createCell(0);  
         	if(solution == null) {
-        		cell.setCellValue(methodTitle + "µÄ½â" + "  " + "sol=null");
+        		cell.setCellValue(methodTitle + "çš„è§£" + "  " + "sol=null");
         	}
         	else {
-        		cell.setCellValue(methodTitle + "µÄ½â" + "  "
+        		cell.setCellValue(methodTitle + "çš„è§£" + "  "
         				+ "[cost=" + String.format("%.3f", solution.calcCost()) + "]" + ", makespan=" + String.format("%.3f", solution.calcMakespan()) + "]");
         		
-	        	//Ğ´ÈëÊ¹ÓÃµÄĞéÄâ»ú
+	        	//å†™å…¥ä½¿ç”¨çš„è™šæ‹Ÿæœº
 	        	rowCount++;
 	        	HashMap<Integer, Integer> vmIdVsRow = new HashMap<Integer, Integer>();
 	        	int vmNum = 0;
 	        	for(VM vm : solution.keySet()){
 	        		vmIdVsRow.put(vm.getId(), rowCount);
-	        		row = sheet.createRow(rowCount++);     //×îĞÂÒªÌí¼ÓµÄÒ»ĞĞ
+	        		row = sheet.createRow(rowCount++);     //æœ€æ–°è¦æ·»åŠ çš„ä¸€è¡Œ
 	        		cell = row.createCell(0);  
 	            	cell.setCellValue("VM" + vmNum + "[id=" + vm.getId() + ",type=" + vm.getType() + "]");
 	            	vmNum++;
 	    		}     
-	        	//°´ÕÕtaskµÄ¿ªÊ¼Ê±¼ä£¬ÒÀ´ÎĞ´ÈëtaskÖ¸ÅÉµÄvmËùÔÚµÄĞĞ
+	        	//æŒ‰ç…§taskçš„å¼€å§‹æ—¶é—´ï¼Œä¾æ¬¡å†™å…¥taskæŒ‡æ´¾çš„vmæ‰€åœ¨çš„è¡Œ
 	        	Map<Task, Allocation> map = solution.getRevMapping();
 	        	Set<Map.Entry<Task, Allocation>> entrySet = map.entrySet();
-	            //////½èÖúlistÊµÏÖhashMapÅÅĞò//////
-	            //×¢Òâ ArrayList<>() À¨ºÅÀïÒª´«Èëmap.entrySet()
+	            //////å€ŸåŠ©listå®ç°hashMapæ’åº//////
+	            //æ³¨æ„ ArrayList<>() æ‹¬å·é‡Œè¦ä¼ å…¥map.entrySet()
 	            List<Map.Entry<Task, Allocation>> list = new ArrayList<>(map.entrySet());
 	            Collections.sort(list, new Comparator<Map.Entry<Task, Allocation>>(){
 	                @Override
 	                public int compare(Map.Entry<Task, Allocation> o1, Map.Entry<Task, Allocation> o2)
 	                {
-	                    //°´ÕÕvalueÖµ£¬ÖØĞ¡µ½´óÅÅĞò
+	                    //æŒ‰ç…§valueå€¼ï¼Œé‡å°åˆ°å¤§æ’åº
 //	                    return (int)(o1.getValue().getStartTime() - o2.getValue().getStartTime());
 	                	return Double.compare(o1.getValue().getStartTime(), o2.getValue().getStartTime());
 	                }
@@ -146,7 +146,7 @@ public class ExcelManage {
 	            	Task t = (Task)s.getKey();
 	            	Allocation allo = (Allocation)s.getValue();
 	            	rowCount = vmIdVsRow.get(allo.getVM().getId());
-	            	row = sheet.getRow(rowCount);     //×îĞÂÒªÌí¼ÓµÄÒ»ĞĞ
+	            	row = sheet.getRow(rowCount);     //æœ€æ–°è¦æ·»åŠ çš„ä¸€è¡Œ
 	            	if(allo.getStartTime() != lastStartTime)
 	            		cellCount++;
 	            	else if(allo.getFinishTime() == 0 || lastFinishTime == 0)
@@ -159,7 +159,7 @@ public class ExcelManage {
 	            } 
         	}
         	
-        	//ÉèÖÃ×Ô¶¯ÁĞ¿í
+        	//è®¾ç½®è‡ªåŠ¨åˆ—å®½
         	for(int i = 0; i < 1000; i++)
             	sheet.autoSizeColumn(i);
         	
@@ -177,13 +177,13 @@ public class ExcelManage {
     }
 
     /** 
-     * ÍùexcelÖĞĞ´Èë. 
-     * @param filePath    ÎÄ¼şÂ·¾¶ 
-     * @param sheetName  ±í¸ñË÷Òı 
+     * å¾€excelä¸­å†™å…¥. 
+     * @param filePath    æ–‡ä»¶è·¯å¾„ 
+     * @param sheetName  è¡¨æ ¼ç´¢å¼• 
      * @param object 
      */  
     public void writeToExcel(String filePath,String sheetName,int parentId, int childId){  
-        //´´½¨workbook  
+        //åˆ›å»ºworkbook  
         File file = new File(filePath);  
         try {  
             workbook = new HSSFWorkbook(new FileInputStream(file));  
@@ -194,11 +194,11 @@ public class ExcelManage {
         }  
         FileOutputStream out = null;  
         HSSFSheet sheet = workbook.getSheet(sheetName);  
-        // »ñÈ¡±í¸ñµÄ×ÜĞĞÊı  
-        int rowCount = sheet.getLastRowNum() + 1; // ĞèÒª¼ÓÒ»  
+        // è·å–è¡¨æ ¼çš„æ€»è¡Œæ•°  
+        int rowCount = sheet.getLastRowNum() + 1; // éœ€è¦åŠ ä¸€  
         try {  
             Cell cell = sheet.createRow(rowCount).createCell(0);  
-        	cell.setCellValue("solÎ¥·´ÒÀÀµ, parentId=" + parentId + ", childId=" + childId);
+        	cell.setCellValue("solè¿åä¾èµ–, parentId=" + parentId + ", childId=" + childId);
      
             out = new FileOutputStream(filePath);  
             workbook.write(out);  
@@ -214,8 +214,8 @@ public class ExcelManage {
     } 
     
     /** 
-     * ÅĞ¶ÏÎÄ¼şÊÇ·ñ´æÔÚ
-     * @param filePath  ÎÄ¼şÂ·¾¶ 
+     * åˆ¤æ–­æ–‡ä»¶æ˜¯å¦å­˜åœ¨
+     * @param filePath  æ–‡ä»¶è·¯å¾„ 
      * @return 
      */  
     public boolean fileExist(String filePath){  
@@ -226,47 +226,47 @@ public class ExcelManage {
     }  
     
     /** 
-     * ÅĞ¶ÏÎÄ¼şµÄsheetÊÇ·ñ´æÔÚ
-     * @param filePath   ÎÄ¼şÂ·¾¶ 
-     * @param sheetName  ±í¸ñË÷ÒıÃû 
+     * åˆ¤æ–­æ–‡ä»¶çš„sheetæ˜¯å¦å­˜åœ¨
+     * @param filePath   æ–‡ä»¶è·¯å¾„ 
+     * @param sheetName  è¡¨æ ¼ç´¢å¼•å 
      * @return 
      */  
     public boolean sheetExist(String filePath,String sheetName){  
          boolean flag = false;  
          File file = new File(filePath);  
-         if(file.exists()){    //ÎÄ¼ş´æÔÚ  
-            //´´½¨workbook  
+         if(file.exists()){    //æ–‡ä»¶å­˜åœ¨  
+            //åˆ›å»ºworkbook  
              try {  
                 workbook = new HSSFWorkbook(new FileInputStream(file));  
-                //Ìí¼ÓWorksheet£¨²»Ìí¼ÓsheetÊ±Éú³ÉµÄxlsÎÄ¼ş´ò¿ªÊ±»á±¨´í)  
+                //æ·»åŠ Worksheetï¼ˆä¸æ·»åŠ sheetæ—¶ç”Ÿæˆçš„xlsæ–‡ä»¶æ‰“å¼€æ—¶ä¼šæŠ¥é”™)  
                 HSSFSheet sheet = workbook.getSheet(sheetName);    
                 if(sheet!=null)  
                     flag = true;  
             } catch (Exception e) {  
                 e.printStackTrace();  
             }                 
-         }else{    //ÎÄ¼ş²»´æÔÚ  
+         }else{    //æ–‡ä»¶ä¸å­˜åœ¨  
              flag = false;  
          }            
          return flag;  
     }
     /** 
-     * ´´½¨ĞÂSheet²¢Ğ´ÈëµÚÒ»ĞĞÊı¾İ
-     * @param filePath  excelµÄÂ·¾¶ 
-     * @param sheetName Òª´´½¨µÄ±í¸ñË÷Òı 
-     * @param titleRow excelµÄµÚÒ»ĞĞ¼´±í¸ñÍ· 
+     * åˆ›å»ºæ–°Sheetå¹¶å†™å…¥ç¬¬ä¸€è¡Œæ•°æ®
+     * @param filePath  excelçš„è·¯å¾„ 
+     * @param sheetName è¦åˆ›å»ºçš„è¡¨æ ¼ç´¢å¼• 
+     * @param titleRow excelçš„ç¬¬ä¸€è¡Œå³è¡¨æ ¼å¤´ 
      * @throws IOException 
      * @throws FileNotFoundException 
      */  
     public void createSheet(String filePath,String sheetName) throws FileNotFoundException, IOException{ 
         FileOutputStream out = null;         
-        File excel = new File(filePath);  // ¶ÁÈ¡ÎÄ¼ş
-        FileInputStream in = new FileInputStream(excel); // ×ª»»ÎªÁ÷
-        workbook = new HSSFWorkbook(in); // ¼ÓÔØexcelµÄ ¹¤×÷Ä¿Â¼       
+        File excel = new File(filePath);  // è¯»å–æ–‡ä»¶
+        FileInputStream in = new FileInputStream(excel); // è½¬æ¢ä¸ºæµ
+        workbook = new HSSFWorkbook(in); // åŠ è½½excelçš„ å·¥ä½œç›®å½•       
                           
-        workbook.createSheet(sheetName); // Ìí¼ÓÒ»¸öĞÂµÄsheet  
-        //Ìí¼Ó±íÍ·  
-//        Row row = workbook.getSheet(sheetName).createRow(0);    //´´½¨µÚÒ»ĞĞ            
+        workbook.createSheet(sheetName); // æ·»åŠ ä¸€ä¸ªæ–°çš„sheet  
+        //æ·»åŠ è¡¨å¤´  
+//        Row row = workbook.getSheet(sheetName).createRow(0);    //åˆ›å»ºç¬¬ä¸€è¡Œ            
         try {              
              
 //           Cell cell = row.createCell(0);  
@@ -285,23 +285,23 @@ public class ExcelManage {
        }             
     }
     /** 
-     * ´´½¨ĞÂexcel. 
-     * @param filePath  excelµÄÂ·¾¶ 
-     * @param sheetName Òª´´½¨µÄ±í¸ñË÷Òı 
-     * @param titleRow excelµÄµÚÒ»ĞĞ¼´±í¸ñÍ· 
+     * åˆ›å»ºæ–°excel. 
+     * @param filePath  excelçš„è·¯å¾„ 
+     * @param sheetName è¦åˆ›å»ºçš„è¡¨æ ¼ç´¢å¼• 
+     * @param titleRow excelçš„ç¬¬ä¸€è¡Œå³è¡¨æ ¼å¤´ 
      */  
     public void createExcel(String filePath,String sheetName){  
-        //´´½¨workbook  
+        //åˆ›å»ºworkbook  
         workbook = new HSSFWorkbook();  
-        //Ìí¼ÓWorksheet£¨²»Ìí¼ÓsheetÊ±Éú³ÉµÄxlsÎÄ¼ş´ò¿ªÊ±»á±¨´í)  
+        //æ·»åŠ Worksheetï¼ˆä¸æ·»åŠ sheetæ—¶ç”Ÿæˆçš„xlsæ–‡ä»¶æ‰“å¼€æ—¶ä¼šæŠ¥é”™)  
 //        workbook.createSheet(sheetName);    
-        //ĞÂ½¨ÎÄ¼ş  
+        //æ–°å»ºæ–‡ä»¶  
         FileOutputStream out = null;  
         try {  
-//            //Ìí¼Ó±íÍ·  
-//            Row row = workbook.getSheet(sheetName).createRow(0);    //´´½¨µÚÒ»ĞĞ     
-//            Cell cell = row.createCell(0);  //´´½¨µÚÒ»ĞĞµÄµÚÒ»ÁĞ
-//            cell.setCellValue(titleRow);   //ÉèÖÃµÚÒ»ĞĞµÚÒ»ÁĞµÄÖµ
+//            //æ·»åŠ è¡¨å¤´  
+//            Row row = workbook.getSheet(sheetName).createRow(0);    //åˆ›å»ºç¬¬ä¸€è¡Œ     
+//            Cell cell = row.createCell(0);  //åˆ›å»ºç¬¬ä¸€è¡Œçš„ç¬¬ä¸€åˆ—
+//            cell.setCellValue(titleRow);   //è®¾ç½®ç¬¬ä¸€è¡Œç¬¬ä¸€åˆ—çš„å€¼
               
             out = new FileOutputStream(filePath);  
             workbook.write(out);  
@@ -316,18 +316,18 @@ public class ExcelManage {
         }    
     }  
     /** 
-     * É¾³ıÎÄ¼ş. 
-     * @param filePath  ÎÄ¼şÂ·¾¶ 
+     * åˆ é™¤æ–‡ä»¶. 
+     * @param filePath  æ–‡ä»¶è·¯å¾„ 
      */  
     public boolean deleteExcel(String filePath){  
         boolean flag = false;  
         File file = new File(filePath);  
-        // ÅĞ¶ÏÄ¿Â¼»òÎÄ¼şÊÇ·ñ´æÔÚ    
+        // åˆ¤æ–­ç›®å½•æˆ–æ–‡ä»¶æ˜¯å¦å­˜åœ¨    
         if (!file.exists()) {  
             return flag;    
         } else {    
-            // ÅĞ¶ÏÊÇ·ñÎªÎÄ¼ş    
-            if (file.isFile()) {  // ÎªÎÄ¼şÊ±µ÷ÓÃÉ¾³ıÎÄ¼ş·½·¨    
+            // åˆ¤æ–­æ˜¯å¦ä¸ºæ–‡ä»¶    
+            if (file.isFile()) {  // ä¸ºæ–‡ä»¶æ—¶è°ƒç”¨åˆ é™¤æ–‡ä»¶æ–¹æ³•    
                 file.delete();  
                 flag = true;  
             }   

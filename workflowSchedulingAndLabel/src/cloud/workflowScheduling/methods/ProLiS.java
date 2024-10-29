@@ -39,7 +39,7 @@ public class ProLiS implements Scheduler {
 		int violationCount = 0;		// test code
 		Solution solution = new Solution();
 		double CPLength = wf.get(0).getpURank(); 	//critical path
-//		System.out.println("ProLiS¹Ø¼üÂ·¾¶³¤¶È£º" + CPLength);
+//		System.out.println("ProLiSå…³é”®è·¯å¾„é•¿åº¦ï¼š" + CPLength);
 		
 		for(int i = 1; i < tasks.size(); i++){		
 			Task task = tasks.get(i);
@@ -54,13 +54,13 @@ public class ProLiS implements Scheduler {
 //			}
 			Allocation alloc = getMinCostVM(task, solution,proSubDeadline, i);
 
-			//µ±CPLength>deadlineÊ±£¬×ÓÆÚÏÞµÄ»®·Ö¿ÉÄÜµ¼ÖÂEFT>subDeadline£»ËùÒÔ±ØÐë¿¼ÂÇ×ÓÆÚÏÞ²»Âú×ãµÄÇé¿ö£º´ËÊ±Ñ¡Ôñminimal EFTµÄVM
+			//å½“CPLength>deadlineæ—¶ï¼Œå­æœŸé™çš„åˆ’åˆ†å¯èƒ½å¯¼è‡´EFT>subDeadlineï¼›æ‰€ä»¥å¿…é¡»è€ƒè™‘å­æœŸé™ä¸æ»¡è¶³çš„æƒ…å†µï¼šæ­¤æ—¶é€‰æ‹©minimal EFTçš„VM
 			if(alloc == null){			//select a vm which allows EFT
 				alloc = getMinEFTVM(task, solution, proSubDeadline, i);
 				
 				VM vm = alloc.getVM();
 				while(alloc.getFinishTime() > proSubDeadline + EvaluateYLW.E && vm.getType() < VM.FASTEST){
-					solution.updateVM(vm);			//upgradeÈô½øÐÐÕû¸ö½âµÄ¸üÐÂ£»¸´ÔÓ¶È½«Ôö³¤Ì«¶à¡£
+					solution.updateVM(vm);			//upgradeè‹¥è¿›è¡Œæ•´ä¸ªè§£çš„æ›´æ–°ï¼›å¤æ‚åº¦å°†å¢žé•¿å¤ªå¤šã€‚
 					alloc.setStartTime(solution.calcEST(task, vm));
 					alloc.setFinishTime(solution.calcEST(task, vm) + task.getTaskSize()/vm.getSpeed());
 				}

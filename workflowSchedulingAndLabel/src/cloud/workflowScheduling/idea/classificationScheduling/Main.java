@@ -12,7 +12,7 @@ import cloud.workflowScheduling.methods.*;
 import cloud.workflowScheduling.setting.*;
 
 /*
- * Ëã·¨ĞÔÄÜ±È½Ï
+ * ç®—æ³•æ€§èƒ½æ¯”è¾ƒ
  * Please download the DAX workflow archive from 
  * https://download.pegasus.isi.edu/misc/SyntheticWorkflows.tar.gz, 
  * unzip it and keep the DAX workflows in an appropriate position before running.
@@ -25,11 +25,11 @@ public class Main {
 	private static double DF_START = 1, DF_INCR = 1, DF_END = 10;
 	
 	private static final int REPEATED_TIMES = 10;
-	private static final int FILE_INDEX_MAX = 200; //Ã¿ÀàÉú³ÉÁË100¸öxml
+	private static final int FILE_INDEX_MAX = 200; //æ¯ç±»ç”Ÿæˆäº†100ä¸ªxml
 	private static final int[] SIZES = {30, 50, 100, 1000}; //30, 50, 100, 1000
-	private static int WorkflowNum = 250; //Ã¿ÖÖsizeµÄ¹¤×÷Á÷¸öÊı
+	private static int WorkflowNum = 250; //æ¯ç§sizeçš„å·¥ä½œæµä¸ªæ•°
 
-	//Ëã·¨newÖ®ºóÒ»Ö±ÔÚÓÃ£¬³ÉÔ±±äÁ¿µÄÖµ»á±£´æÉÏÒ»´ÎµÄÖ´ĞĞ£¬ËùÒÔ½øÈëËã·¨ºó£¬ÏÈ³õÊ¼»¯³ÉÔ±±äÁ¿
+	//ç®—æ³•newä¹‹åä¸€ç›´åœ¨ç”¨ï¼Œæˆå‘˜å˜é‡çš„å€¼ä¼šä¿å­˜ä¸Šä¸€æ¬¡çš„æ‰§è¡Œï¼Œæ‰€ä»¥è¿›å…¥ç®—æ³•åï¼Œå…ˆåˆå§‹åŒ–æˆå‘˜å˜é‡
 	//new ClassifySchedule(), new Method1uRank(), new Method2ProLiS(), new Method6(), new Method3(), new ICPCP(), new ProLiS(1.5), new PSO()
 	private static final Scheduler[] METHODS = {new ClassifySchedule(), new Method1uRank(), new Method2ProLiS(), new Method6(), new Method3(), new ICPCP(), new ProLiS(1.5), new PSO()}; 
 	//"CyberShake","Epigenomics","Inspiral", "Montage", "Sipht"
@@ -47,12 +47,12 @@ public class Main {
 	public static List<Double> deadlines = new ArrayList<Double>();
 	public static List<Double> deadlineFactors = new ArrayList<Double>();
 	public static HashMap<String, String> classifyResult = new HashMap<String, String>();
-	//Ã¿Ò»ÖÖ¹¤×÷Á÷µÄÃ¿Ò»ÖÖsize¶ÔÓ¦µÄminCostºÍmaxCost
+	//æ¯ä¸€ç§å·¥ä½œæµçš„æ¯ä¸€ç§sizeå¯¹åº”çš„minCostå’ŒmaxCost
 	public static HashMap<String, List<Double>> minMaxCost = new LinkedHashMap<String, List<Double>>();
 	
-	static boolean isCalMinMaxCost = false; //ÊÇ·ñ¼ÆËãMinMaxCost£ºtrue¼ÆËã£¬false´ÓÎÄ¼ş¶ÁÈ¡¼ÆËãºÃµÄ
-//	public static boolean isCallClassifyMethod = true; // ÊÇ·ñµ÷ÓÃ·ÖÀàËã·¨
-	public static boolean onlyCalCostOfFeasible = true; //ÊÇ·ñ½ö½ö¼ÆËã¿ÉĞĞ½âµÄcost£¬Ö®Ç°ÅÜµÄ¶¼ÊÇfalse
+	static boolean isCalMinMaxCost = false; //æ˜¯å¦è®¡ç®—MinMaxCostï¼štrueè®¡ç®—ï¼Œfalseä»æ–‡ä»¶è¯»å–è®¡ç®—å¥½çš„
+//	public static boolean isCallClassifyMethod = true; // æ˜¯å¦è°ƒç”¨åˆ†ç±»ç®—æ³•
+	public static boolean onlyCalCostOfFeasible = true; //æ˜¯å¦ä»…ä»…è®¡ç®—å¯è¡Œè§£çš„costï¼Œä¹‹å‰è·‘çš„éƒ½æ˜¯false
 	
 	public static BufferedWriter bwUpdate = null;
 	
@@ -65,7 +65,7 @@ public class Main {
 		bwUpdate = new BufferedWriter(new FileWriter(OUTPUT_LOCATION + "\\update_minMaxCost.txt"));
 		bwUpdate.close();
 		
-		//¼ÆËãÃ¿ÖÖÀàĞÍ¹¤×÷Á÷µÄÃ¿ÖÖsizeÔÚ²»Í¬·½·¨ÏÂµÄ½á¹û£¬ÀıÈçCyberÔÚsize30£¬²»Í¬·½·¨ÔÚ²»Í¬deadlineÉÏµÄ½á¹û
+		//è®¡ç®—æ¯ç§ç±»å‹å·¥ä½œæµçš„æ¯ç§sizeåœ¨ä¸åŒæ–¹æ³•ä¸‹çš„ç»“æœï¼Œä¾‹å¦‚Cyberåœ¨size30ï¼Œä¸åŒæ–¹æ³•åœ¨ä¸åŒdeadlineä¸Šçš„ç»“æœ
 //		//WorkflowNum = FILE_INDEX_MAX;
 //		List<List<String>> workflowList = new ArrayList<List<String>>();
 //		for(int si = 0; si < SIZES.length; si++) {
@@ -77,9 +77,9 @@ public class Main {
 //			workflowList.add(w);
 //		}
 		
-		//Ëæ»úÉú³ÉÃ¿ÖÖsizeµÄ¹¤×÷Á÷
+		//éšæœºç”Ÿæˆæ¯ç§sizeçš„å·¥ä½œæµ
 //		selectWorkflows(FILE_INDEX_MAX, WorkflowNum); 
-		//¶ÁÈ¡Ëæ»úÉú³ÉµÄ¹¤×÷Á÷
+		//è¯»å–éšæœºç”Ÿæˆçš„å·¥ä½œæµ
 		List<List<String>> workflowList = new ArrayList<List<String>>();
 		for(int si = 0; si < SIZES.length; si++) {
 			List<String> w = new ArrayList<String>();
@@ -88,9 +88,9 @@ public class Main {
 			workflowList.add(w);
 		}
 		
-		//¶ÁÈ¡·ÖÀà½á¹û
+		//è¯»å–åˆ†ç±»ç»“æœ
 		String crFile = "E:\\0Work\\1Ideas\\workflowClassificationAndScheduling\\DAGclassificationWithTT-test\\"
-							+ "ĞÂresult-wen+»®·Ö+²½³¤\\epoch199_classificationResult.txt";	
+							+ "æ–°result-wen+åˆ’åˆ†+æ­¥é•¿\\epoch199_classificationResult.txt";	
 //		String crFile = "E:\\0Work\\1Ideas\\workflowClassificationAndScheduling\\workflowScheduling\\"
 //							+ "workflow2subDLable\\result\\repeat\\workflow2label2_200.txt";
 		getClassifyResultFromFile(crFile);
@@ -121,7 +121,7 @@ public class Main {
 			bw.write("\r\n\r\n");
 			printTo(bw, successResult, "success ratio");
 			if(onlyCalCostOfFeasible)
-				printCostOfFeasibleTo(bw, successResult, NCResult, "normalized cost"); //¼ÆËãREPEATED_TIMESÖĞÄ³Ğ©´Î¿ÉĞĞ½âµÄÆ½¾ùcost
+				printCostOfFeasibleTo(bw, successResult, NCResult, "normalized cost"); //è®¡ç®—REPEATED_TIMESä¸­æŸäº›æ¬¡å¯è¡Œè§£çš„å¹³å‡cost
 			else
 				printTo(bw, NCResult, "normalized cost");
 
@@ -134,7 +134,7 @@ public class Main {
 		}
 	}
 	
-	//¼ÆËãminCostºÍmaxCost
+	//è®¡ç®—minCostå’ŒmaxCost
 	private static void calMinMaxCost() throws IOException {
 		int deadlineNum = (int) ((DF_END - DF_START) / DF_INCR + 1);
 		
@@ -180,11 +180,11 @@ public class Main {
 //		bw.close();
 	}
 
-	//´ÓÎÄ¼şÖĞ¶ÁÈ¡minCostºÍmaxCost
+	//ä»æ–‡ä»¶ä¸­è¯»å–minCostå’ŒmaxCost
 	private static void readMinMaxCost(String fileName) throws IOException {
 		String str = null;
 		FileInputStream fis = new FileInputStream(OUTPUT_LOCATION + "\\" + fileName);
-		InputStreamReader isr = new InputStreamReader(fis);// InputStreamReader ÊÇ×Ö½ÚÁ÷Í¨Ïò×Ö·ûÁ÷µÄÇÅÁº,
+		InputStreamReader isr = new InputStreamReader(fis);// InputStreamReader æ˜¯å­—èŠ‚æµé€šå‘å­—ç¬¦æµçš„æ¡¥æ¢,
 		BufferedReader br = new BufferedReader(isr);
 		try
 		{
@@ -202,21 +202,21 @@ public class Main {
 	}
 	
 	/**
-	 * @param file	xmlËùÔÚµÄÎÄ¼ş
-	 * @param di	µÚdi¸ödeadline¼ä¸ô
-	 * @param fi	ÖØ¸´Ö´ĞĞn´Î£¬ÕâÊÇµÚfi´Î
+	 * @param file	xmlæ‰€åœ¨çš„æ–‡ä»¶
+	 * @param di	ç¬¬diä¸ªdeadlineé—´éš”
+	 * @param fi	é‡å¤æ‰§è¡Œnæ¬¡ï¼Œè¿™æ˜¯ç¬¬fiæ¬¡
 	 * @param si	task size
 	 */
 	private static void testForMinMaxCost(String file, int di) {
-		// ½âÎöfileÎÄ¼şÖĞµÄ¹¤×÷Á÷
+		// è§£æfileæ–‡ä»¶ä¸­çš„å·¥ä½œæµ
 		Workflow wf = new Workflow(file);
 	
-		Benchmarks benSched = new Benchmarks(wf); // »ñµÃµ±Ç°¹¤×÷Á÷µÄÁ½¸öBenchmark½â£¬ÎªÁË¼ÆËãmax minµÄdeadline
-		System.out.print("Benchmark-FastSchedule£º" + benSched.getFastSchedule());
-		System.out.print("Benchmark-CheapSchedule£º" + benSched.getCheapSchedule());
-		System.out.print("Benchmark-MinCost8Schedule£º" + benSched.getMinCost8Schedule());
+		Benchmarks benSched = new Benchmarks(wf); // è·å¾—å½“å‰å·¥ä½œæµçš„ä¸¤ä¸ªBenchmarkè§£ï¼Œä¸ºäº†è®¡ç®—max minçš„deadline
+		System.out.print("Benchmark-FastScheduleï¼š" + benSched.getFastSchedule());
+		System.out.print("Benchmark-CheapScheduleï¼š" + benSched.getCheapSchedule());
+		System.out.print("Benchmark-MinCost8Scheduleï¼š" + benSched.getMinCost8Schedule());
 	
-		// Çóµ±Ç°µÄdeadline = min+ (max-min)*deadlineFactor
+		// æ±‚å½“å‰çš„deadline = min+ (max-min)*deadlineFactor
 		double deadlineFactor = 0;
 	//	if(di == 0)
 	//		deadlineFactor = 1.5;
@@ -233,9 +233,9 @@ public class Main {
 			method = METHODS[mi];
 			wf1.setDeadline(deadline);
 			
-			System.out.println("ÔËĞĞËã·¨The current algorithm: " + method.getClass().getCanonicalName());
+			System.out.println("è¿è¡Œç®—æ³•The current algorithm: " + method.getClass().getCanonicalName());
 	
-			// µ÷ÓÃËã·¨
+			// è°ƒç”¨ç®—æ³•
 			long starTime = System.currentTimeMillis();
 			Solution sol = method.schedule(wf1);
 	
@@ -257,7 +257,7 @@ public class Main {
 					em.writeToExcel(ExcelFilePath, sheetName, result.get(1).intValue(), result.get(0).intValue());
 				throw new RuntimeException();
 			}
-			System.out.println("runtime£º" + runTime + "ms;   solution: " + sol);
+			System.out.println("runtimeï¼š" + runTime + "ms;   solution: " + sol);
 	
 			String fileName = file.substring(file.lastIndexOf("\\")+1, file.indexOf("."));
 			if(isSatisfied == 1) {
@@ -273,18 +273,18 @@ public class Main {
 	}
 
 	/**
-	 * ¼ÆËãfile¹¤×÷Á÷(ÔÚµÚsi¸ösizeÏÂ£¬fileIndexÏÂ)ÔÚdeadlineÎªdiËÉ½ôÏÂÊ±¸÷Ëã·¨µÄ½á¹û£¨³É¹¦ÂÊ£¬±ê×¼cost£©
+	 * è®¡ç®—fileå·¥ä½œæµ(åœ¨ç¬¬siä¸ªsizeä¸‹ï¼ŒfileIndexä¸‹)åœ¨deadlineä¸ºdiæ¾ç´§ä¸‹æ—¶å„ç®—æ³•çš„ç»“æœï¼ˆæˆåŠŸç‡ï¼Œæ ‡å‡†costï¼‰
 	 * 
 	 * @param file
-	 *            xmlËùÔÚµÄÎÄ¼ş
+	 *            xmlæ‰€åœ¨çš„æ–‡ä»¶
 	 * @param di
-	 *            µÚdi¸ödeadline¼ä¸ô
+	 *            ç¬¬diä¸ªdeadlineé—´éš”
 	 * @param fi
-	 *            ÖØ¸´Ö´ĞĞn´Î£¬ÕâÊÇµÚfi´Î
+	 *            é‡å¤æ‰§è¡Œnæ¬¡ï¼Œè¿™æ˜¯ç¬¬fiæ¬¡
 	 * @param si
 	 *            task size
 	 * @param successResult
-	 *            ÔÚdiÏÂ¸öËã·¨µÄ³É¹¦ÂÊ
+	 *            åœ¨diä¸‹ä¸ªç®—æ³•çš„æˆåŠŸç‡
 	 * @param NCResult
 	 *            normalized cost
 	 * @param refValues
@@ -292,19 +292,19 @@ public class Main {
 	 */
 	private static void test(String file, int di, int fi, int si, double[][][] successResult, double[][][] NCResult,
 			double[] refValues) throws IOException {
-		// ½âÎöfileÎÄ¼şÖĞµÄ¹¤×÷Á÷
+		// è§£æfileæ–‡ä»¶ä¸­çš„å·¥ä½œæµ
 		Workflow wf = new Workflow(file);
 
-		Benchmarks benSched = new Benchmarks(wf); // »ñµÃµ±Ç°¹¤×÷Á÷µÄÁ½¸öBenchmark½â£¬ÎªÁË¼ÆËãmax minµÄdeadline
-		System.out.print("Benchmark-FastSchedule£º" + benSched.getFastSchedule());
-		System.out.print("Benchmark-CheapSchedule£º" + benSched.getCheapSchedule());
-		System.out.print("Benchmark-MinCost8Schedule£º" + benSched.getMinCost8Schedule());
+		Benchmarks benSched = new Benchmarks(wf); // è·å¾—å½“å‰å·¥ä½œæµçš„ä¸¤ä¸ªBenchmarkè§£ï¼Œä¸ºäº†è®¡ç®—max minçš„deadline
+		System.out.print("Benchmark-FastScheduleï¼š" + benSched.getFastSchedule());
+		System.out.print("Benchmark-CheapScheduleï¼š" + benSched.getCheapSchedule());
+		System.out.print("Benchmark-MinCost8Scheduleï¼š" + benSched.getMinCost8Schedule());
 //		double fastestCost = benSched.getFastSchedule().calcCost();
 //		double fastestMakespan = benSched.getFastSchedule().calcMakespan();
 //		double slowestCost = benSched.getCheapSchedule().calcCost();
 //		double slowestMakespan = benSched.getCheapSchedule().calcMakespan();
 
-		// Çóµ±Ç°µÄdeadline = min+ (max-min)*deadlineFactor
+		// æ±‚å½“å‰çš„deadline = min+ (max-min)*deadlineFactor
 		double deadlineFactor = 0;
 //		if(di == 0)
 //			deadlineFactor = 1.5;
@@ -323,8 +323,8 @@ public class Main {
 			Scheduler method = METHODS[mi];
 			String methodName = method.getClass().getCanonicalName();
 			methodName = methodName.substring(methodName.lastIndexOf(".")+1);
-//			if(Main.isCallClassifyMethod && mi == 0) { //ÎÒµÄ·ÖÀàµ÷¶ÈËã·¨
-			if(methodName.equals("ClassifySchedule")) { //ÎÒµÄ·ÖÀàµ÷¶ÈËã·¨
+//			if(Main.isCallClassifyMethod && mi == 0) { //æˆ‘çš„åˆ†ç±»è°ƒåº¦ç®—æ³•
+			if(methodName.equals("ClassifySchedule")) { //æˆ‘çš„åˆ†ç±»è°ƒåº¦ç®—æ³•
 				int a = file.lastIndexOf("\\");
 				String key = file.substring(a) + "d" + deadlineFactor;
 				String cResult = Main.classifyResult.get(key);
@@ -337,7 +337,7 @@ public class Main {
 //				else if(cResult.equals("4"))
 //					method = new Method3();
 //				else {
-//					System.out.println("ÎŞĞ§µÄ·ÖÀà½á¹û");
+//					System.out.println("æ— æ•ˆçš„åˆ†ç±»ç»“æœ");
 //					System.exit(0);
 //				}
 				method = new ClassifySchedule(cResult);
@@ -345,11 +345,11 @@ public class Main {
 //			else
 //				method = METHODS[mi];
 			wf1.setDeadline(deadline);
-			wf1.setDeadlineFactor(deadlineFactor); // ÎªHGSAÔö¼Ó
+			wf1.setDeadlineFactor(deadlineFactor); // ä¸ºHGSAå¢åŠ 
 			
-			System.out.println("ÔËĞĞËã·¨The current algorithm: " + method.getClass().getCanonicalName());
+			System.out.println("è¿è¡Œç®—æ³•The current algorithm: " + method.getClass().getCanonicalName());
 
-			// µ÷ÓÃËã·¨
+			// è°ƒç”¨ç®—æ³•
 			long starTime = System.currentTimeMillis();
 			Solution sol = method.schedule(wf1);
 
@@ -371,7 +371,7 @@ public class Main {
 					em.writeToExcel(ExcelFilePath, sheetName, result.get(1).intValue(), result.get(0).intValue());
 				throw new RuntimeException();
 			}
-			System.out.println("runtime£º" + runTime + "ms;   solution: " + sol);
+			System.out.println("runtimeï¼š" + runTime + "ms;   solution: " + sol);
 
 			String fileName = file.substring(file.lastIndexOf("\\")+1, file.indexOf("."));
 			successResult[di][mi][fi + si* REPEATED_TIMES] += isSatisfied;
@@ -388,7 +388,7 @@ public class Main {
 			else
 				NCResult[di][mi][fi + si* REPEATED_TIMES] += cost;
 			if(isSatisfied == 1) {
-				if(cost < 0) { //ËµÃ÷ÇóµÃÁË¸üĞ¡µÄ½á¹û
+				if(cost < 0) { //è¯´æ˜æ±‚å¾—äº†æ›´å°çš„ç»“æœ
 					bwUpdate = new BufferedWriter(new FileWriter(OUTPUT_LOCATION + "\\update_minMaxCost.txt", true));
 					bwUpdate.write(fileName+", min"+  Main.minMaxCost.get(fileName).get(0)+ "==> "+ sol.calcCost());
 					bwUpdate.close();
@@ -484,15 +484,15 @@ public class Main {
 	private static void readOptimizedSubD(String filePath) {
 		FileInputStream fis = null;
 		InputStreamReader isr = null;
-		BufferedReader br = null; // ÓÃÓÚ°ü×°InputStreamReader,Ìá¸ß´¦ÀíĞÔÄÜ¡£ÒòÎªBufferedReaderÓĞ»º³åµÄ£¬¶øInputStreamReaderÃ»ÓĞ¡£
+		BufferedReader br = null; // ç”¨äºåŒ…è£…InputStreamReader,æé«˜å¤„ç†æ€§èƒ½ã€‚å› ä¸ºBufferedReaderæœ‰ç¼“å†²çš„ï¼Œè€ŒInputStreamReaderæ²¡æœ‰ã€‚
 		try {
 			String str = "";
 //			String str1 = "";
 			String[] s, s1, s2;
 			fis = new FileInputStream(filePath);// FileInputStream
-			// ´ÓÎÄ¼şÏµÍ³ÖĞµÄÄ³¸öÎÄ¼şÖĞ»ñÈ¡×Ö½Ú
-			isr = new InputStreamReader(fis);// InputStreamReader ÊÇ×Ö½ÚÁ÷Í¨Ïò×Ö·ûÁ÷µÄÇÅÁº,
-			br = new BufferedReader(isr);// ´Ó×Ö·ûÊäÈëÁ÷ÖĞ¶ÁÈ¡ÎÄ¼şÖĞµÄÄÚÈİ,·â×°ÁËÒ»¸önew InputStreamReaderµÄ¶ÔÏó
+			// ä»æ–‡ä»¶ç³»ç»Ÿä¸­çš„æŸä¸ªæ–‡ä»¶ä¸­è·å–å­—èŠ‚
+			isr = new InputStreamReader(fis);// InputStreamReader æ˜¯å­—èŠ‚æµé€šå‘å­—ç¬¦æµçš„æ¡¥æ¢,
+			br = new BufferedReader(isr);// ä»å­—ç¬¦è¾“å…¥æµä¸­è¯»å–æ–‡ä»¶ä¸­çš„å†…å®¹,å°è£…äº†ä¸€ä¸ªnew InputStreamReaderçš„å¯¹è±¡
 			while ((str = br.readLine()) != null) {
 //				str1 += str + "\n";
 				HashMap<Integer, Double> task2SubD = new HashMap<Integer, Double>();
@@ -504,17 +504,17 @@ public class Main {
 				}
 				type2subD.put(s[0].trim(), task2SubD);
 			}
-//			System.out.println(str1);// ´òÓ¡³östr1
+//			System.out.println(str1);// æ‰“å°å‡ºstr1
 		} catch (FileNotFoundException e) {
-			System.out.println("ÕÒ²»µ½Ö¸¶¨ÎÄ¼ş");
+			System.out.println("æ‰¾ä¸åˆ°æŒ‡å®šæ–‡ä»¶");
 		} catch (IOException e) {
-			System.out.println("¶ÁÈ¡ÎÄ¼şÊ§°Ü");
+			System.out.println("è¯»å–æ–‡ä»¶å¤±è´¥");
 		} finally {
 			try {
 				br.close();
 				isr.close();
 				fis.close();
-				// ¹Ø±ÕµÄÊ±ºò×îºÃ°´ÕÕÏÈºóË³Ğò¹Ø±Õ×îºó¿ªµÄÏÈ¹Ø±ÕËùÒÔÏÈ¹Øs,ÔÙ¹Øn,×îºó¹Øm
+				// å…³é—­çš„æ—¶å€™æœ€å¥½æŒ‰ç…§å…ˆåé¡ºåºå…³é—­æœ€åå¼€çš„å…ˆå…³é—­æ‰€ä»¥å…ˆå…³s,å†å…³n,æœ€åå…³m
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -523,9 +523,9 @@ public class Main {
 	}
 	
 	/**
-	 * ´ÓÉú³ÉµÄ¹¤×÷Á÷ÖĞËæ»úÑ¡ÔñÊ¹ÓÃµÄ¹¤×÷Á÷
-	 * @param eachSizeNum ¹¤×÷Á÷sizeÓĞ30¡¢50¡¢100¡¢1000ËÄÖÖ£¬Ã¿ÖÖµÄ¸öÊı
-	 * @param eachSizeSelNum ¹¤×÷Á÷sizeÓĞ30¡¢50¡¢100¡¢1000ËÄÖÖ£¬Ã¿ÖÖ±»Ñ¡ÔñµÄ¸öÊı
+	 * ä»ç”Ÿæˆçš„å·¥ä½œæµä¸­éšæœºé€‰æ‹©ä½¿ç”¨çš„å·¥ä½œæµ
+	 * @param eachSizeNum å·¥ä½œæµsizeæœ‰30ã€50ã€100ã€1000å››ç§ï¼Œæ¯ç§çš„ä¸ªæ•°
+	 * @param eachSizeSelNum å·¥ä½œæµsizeæœ‰30ã€50ã€100ã€1000å››ç§ï¼Œæ¯ç§è¢«é€‰æ‹©çš„ä¸ªæ•°
 	 * @throws IOException 
 	 */
 	private static void selectWorkflows(int eachSizeNum, int eachSizeSelNum) throws IOException {
@@ -536,7 +536,7 @@ public class Main {
 			List<String> selectedWorkflows = new ArrayList<String>();
 			int size = SIZES[si];
 			for(int num = 0; num < eachSizeSelNum; num++) {
-				int typeIndex = (int)(Math.random()*Main.WORKFLOWS.length); //Ëæ»úÑ¡ÔñÄ³¸öÀàĞÍµÄ¹¤×÷Á÷£¬ÈçCyberShake
+				int typeIndex = (int)(Math.random()*Main.WORKFLOWS.length); //éšæœºé€‰æ‹©æŸä¸ªç±»å‹çš„å·¥ä½œæµï¼Œå¦‚CyberShake
 				int fileIndex = (int)(Math.random()*eachSizeNum);
 				String file = Main.WORKFLOWS[typeIndex] +"_"+ size + "." + fileIndex + ".xml";
 				while(selectedWorkflows.contains(file)) {
@@ -555,7 +555,7 @@ public class Main {
 		}
 	}
 	
-	/**»ñÈ¡¹¤×÷Á÷²âÊÔ¼¯
+	/**è·å–å·¥ä½œæµæµ‹è¯•é›†
 	 * @throws IOException 
 	 * @throws ClassNotFoundException */
 	public static List<String> getWorkflowListFromFile(String filename) throws IOException, ClassNotFoundException
@@ -563,7 +563,7 @@ public class Main {
 		List<String> w_List = new ArrayList<String>();
 		String w = null;
 		FileInputStream fis = new FileInputStream(filename);
-		InputStreamReader isr = new InputStreamReader(fis);// InputStreamReader ÊÇ×Ö½ÚÁ÷Í¨Ïò×Ö·ûÁ÷µÄÇÅÁº,
+		InputStreamReader isr = new InputStreamReader(fis);// InputStreamReader æ˜¯å­—èŠ‚æµé€šå‘å­—ç¬¦æµçš„æ¡¥æ¢,
 		BufferedReader br = new BufferedReader(isr);
 		try
 		{
@@ -579,7 +579,7 @@ public class Main {
 		return w_List;
 	}
 	
-	/**»ñÈ¡¹¤×÷Á÷µÄ·ÖÀà½á¹û
+	/**è·å–å·¥ä½œæµçš„åˆ†ç±»ç»“æœ
 	 * @throws IOException 
 	 * @throws ClassNotFoundException */
 	public static List<String> getClassifyResultFromFile(String filename) throws IOException, ClassNotFoundException
@@ -587,7 +587,7 @@ public class Main {
 		List<String> w_List = new ArrayList<String>();
 		String str = null;
 		FileInputStream fis = new FileInputStream(filename);
-		InputStreamReader isr = new InputStreamReader(fis);// InputStreamReader ÊÇ×Ö½ÚÁ÷Í¨Ïò×Ö·ûÁ÷µÄÇÅÁº,
+		InputStreamReader isr = new InputStreamReader(fis);// InputStreamReader æ˜¯å­—èŠ‚æµé€šå‘å­—ç¬¦æµçš„æ¡¥æ¢,
 		BufferedReader br = new BufferedReader(isr);
 		try
 		{
@@ -603,7 +603,7 @@ public class Main {
 	}
 	
 //	/**
-//	 * ÔÚReadfile¶ÁsubD, ·Ö±ğĞ´ÈëwriteFile1ºÍwriteFile2
+//	 * åœ¨Readfileè¯»subD, åˆ†åˆ«å†™å…¥writeFile1å’ŒwriteFile2
 //	 * @param Readfile
 //	 * @param writeFile1
 //	 * @param  
@@ -611,15 +611,15 @@ public class Main {
 //	private static void readWriteOptimizedSubD(String Readfile, String writeFile1, String writeFile2) {
 //		FileInputStream fis = null;
 //		InputStreamReader isr = null;
-//		BufferedReader br = null; // ÓÃÓÚ°ü×°InputStreamReader,Ìá¸ß´¦ÀíĞÔÄÜ¡£ÒòÎªBufferedReaderÓĞ»º³åµÄ£¬¶øInputStreamReaderÃ»ÓĞ¡£
+//		BufferedReader br = null; // ç”¨äºåŒ…è£…InputStreamReader,æé«˜å¤„ç†æ€§èƒ½ã€‚å› ä¸ºBufferedReaderæœ‰ç¼“å†²çš„ï¼Œè€ŒInputStreamReaderæ²¡æœ‰ã€‚
 //		try {
 //			String str = "";
 ////			String str1 = "";
 //			String[] s, s1, s2;
 //			fis = new FileInputStream(Readfile);// FileInputStream
-//			// ´ÓÎÄ¼şÏµÍ³ÖĞµÄÄ³¸öÎÄ¼şÖĞ»ñÈ¡×Ö½Ú
-//			isr = new InputStreamReader(fis);// InputStreamReader ÊÇ×Ö½ÚÁ÷Í¨Ïò×Ö·ûÁ÷µÄÇÅÁº,
-//			br = new BufferedReader(isr);// ´Ó×Ö·ûÊäÈëÁ÷ÖĞ¶ÁÈ¡ÎÄ¼şÖĞµÄÄÚÈİ,·â×°ÁËÒ»¸önew InputStreamReaderµÄ¶ÔÏó
+//			// ä»æ–‡ä»¶ç³»ç»Ÿä¸­çš„æŸä¸ªæ–‡ä»¶ä¸­è·å–å­—èŠ‚
+//			isr = new InputStreamReader(fis);// InputStreamReader æ˜¯å­—èŠ‚æµé€šå‘å­—ç¬¦æµçš„æ¡¥æ¢,
+//			br = new BufferedReader(isr);// ä»å­—ç¬¦è¾“å…¥æµä¸­è¯»å–æ–‡ä»¶ä¸­çš„å†…å®¹,å°è£…äº†ä¸€ä¸ªnew InputStreamReaderçš„å¯¹è±¡
 //			while ((str = br.readLine()) != null) {
 ////				str1 += str + "\n";
 //				HashMap<Integer, Double> task2SubD = new HashMap<Integer, Double>();
@@ -631,17 +631,17 @@ public class Main {
 //				}
 //				type2subD.put(s[0].trim(), task2SubD);
 //			}
-////			System.out.println(str1);// ´òÓ¡³östr1
+////			System.out.println(str1);// æ‰“å°å‡ºstr1
 //		} catch (FileNotFoundException e) {
-//			System.out.println("ÕÒ²»µ½Ö¸¶¨ÎÄ¼ş");
+//			System.out.println("æ‰¾ä¸åˆ°æŒ‡å®šæ–‡ä»¶");
 //		} catch (IOException e) {
-//			System.out.println("¶ÁÈ¡ÎÄ¼şÊ§°Ü");
+//			System.out.println("è¯»å–æ–‡ä»¶å¤±è´¥");
 //		} finally {
 //			try {
 //				br.close();
 //				isr.close();
 //				fis.close();
-//				// ¹Ø±ÕµÄÊ±ºò×îºÃ°´ÕÕÏÈºóË³Ğò¹Ø±Õ×îºó¿ªµÄÏÈ¹Ø±ÕËùÒÔÏÈ¹Øs,ÔÙ¹Øn,×îºó¹Øm
+//				// å…³é—­çš„æ—¶å€™æœ€å¥½æŒ‰ç…§å…ˆåé¡ºåºå…³é—­æœ€åå¼€çš„å…ˆå…³é—­æ‰€ä»¥å…ˆå…³s,å†å…³n,æœ€åå…³m
 //			} catch (IOException e) {
 //				e.printStackTrace();
 //			}
